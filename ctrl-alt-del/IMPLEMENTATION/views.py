@@ -24,3 +24,14 @@ class MainView(TemplateView):
         #Get time in required format
         fmt = '%Y%m%d'
         today = datetime.datetime.now().strftime(fmt)
+        
+
+@login_required()
+@csrf_exempt
+def registration(request):
+    template_response = 'registration.html'
+
+    # Check if he is an Employee or Manager, If he is an Employee, Provide Registration Form. 
+    #p = Selection(user=username, match1=event.match1, match2=event.match2, date=today, choice1=selection1, choice2=selection2, points=0)
+    #p.save()
+    return render(request, template_response)
