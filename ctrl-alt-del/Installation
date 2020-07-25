@@ -1,0 +1,21 @@
+Requirements:
+pip install virtualenv
+mkvirtualenv hackathon-django-1.11
+virtualenv hackathon-django-1.11
+source hackathon-django-1.11/bin/activate
+
+Install Django
+pip install django=1.9
+
+Install Sqllite:
+For MAC OS Sqllite is installed by Default
+
+RunServer:
+python manage.py runserver 0.0.0.0:8000
+
+Sqllite Commands:
+Connect to DB:
+sqlite3 ctrl-alt-del/db.sqlite3
+
+.tables
+.headers on ---> get data with table headers
