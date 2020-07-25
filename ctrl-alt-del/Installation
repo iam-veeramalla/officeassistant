@@ -1,11 +1,11 @@
 Requirements:
 pip install virtualenv
-mkvirtualenv hackathon-django-1.11
-virtualenv hackathon-django-1.11
-source hackathon-django-1.11/bin/activate
+mkvirtualenv hackathon-django-1.9
+virtualenv hackathon-django-1.9
+source hackathon-django-1.9/bin/activate
 
 Install Django
-pip install django=1.9
+pip install django==1.9
 
 Install Sqllite:
 For MAC OS Sqllite is installed by Default
