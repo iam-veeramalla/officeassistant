@@ -4,157 +4,67 @@
   <title>Office Assistant</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  {% load static %}
+<!--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<!--  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+
+    <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+  <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/sticky-footer-navbar/">
+<!--  <link rel="stylesheet" type="text/css" href="{'% static 'cal/css/styles.css' %}">-->
+<!--  <link rel="stylesheet" href="{'% static 'css/styles.css' %}">-->
+
+    <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<!--  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"-->
+<!--    crossorigin="anonymous"></script>-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
   <style>
-
-    body {font-family: Arial, Helvetica, sans-serif;}
-    /* Remove the navbar's default margin-bottom and rounded borders */
-    .navbar {
-      margin-bottom: 0;
-      border-radius: 0;
-    }
-
-    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-    .row.content {height: 450px}
-
-    /* Set gray background color and 100% height */
-    .sidenav {
-      padding-top: 20px;
-      background-color: #f1f1f1;
-      min-height: 150%;
-    }
-
-    /* Set black background color, white text and some padding */
-    footer {
-      background-color: #555;
-      color: white;
-      padding: 15px;
-    }
-
-    input[type=text], input[type=password] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    }
-
-    button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    }
-
-    button:hover {
-    opacity: 0.8;
-    }
-
-    /* cancel button */
-    .cancelbtn {
-    width: auto;
-    padding: 10px 18px;
-    background-color: #f44336;
-    }
-
-    .imgcontainer {
-    text-align: center;
-    margin: 24px 0 12px 0;
-    position: relative;
-    }
-
-    img.avatar {
-    width: 40%;
-    border-radius: 50%;
-    }
-
-    .container {
-    padding: 16px;
-    }
-
-    span.psw {
-    float: right;
-    padding-top: 16px;
-    }
-
-    .modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
+  html {
     height: 100%;
-    overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
-    padding-top: 60px;
-    }
-
-    .modal-content {
-    background-color: #fefefe;
-    margin: 5% auto 15% auto;
-    border: 1px solid #888;
-    width: 80%;
-    }
-
-    .close {
+  }
+  html body {
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  html body .container-fluid.body-content {
+    width: 100%;
+    overflow-y: auto;
+    /* margin-top: -80px;
+    margin: -80px auto 80px */
+  }
+  .footer {
     position: absolute;
-    right: 25px;
-    top: 0;
-    color: #000;
-    font-size: 35px;
-    font-weight: bold;
-    }
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    line-height: 60px; /* Vertically center the text there */
+    background-color: #555555;
+    flex-shrink: 0;
+  }
 
-    .close:hover,
-    .close:focus {
-    color: red;
-    cursor: pointer;
-    }
+  /* Custom page CSS
+  -------------------------------------------------- */
+  /* Not required for template or sticky footer method. */
 
-    .animate {
-    -webkit-animation: animatezoom 0.6s;
-    animation: animatezoom 0.6s
-    }
+  body > .container {
+    padding: 60px 15px 0;
+  }
 
-    @-webkit-keyframes animatezoom {
-    from {-webkit-transform: scale(0)}
-    to {-webkit-transform: scale(1)}
-    }
+  .footer > .container {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
 
-    @keyframes animatezoom {
-    from {transform: scale(0)}
-    to {transform: scale(1)}
-    }
-
-    @media screen and (max-width: 300px) {
-        span.psw {
-            display: block;
-            float: none;
-        }
-        .cancelbtn {
-            width: 100%;
-        }
-    }
-    table, th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
-    }
-    th, td {
-    padding: 5px;
-    text-align: left;
-    }
-    table.center {
-    margin-left:auto;
-    margin-right:auto;
-    }
     #customers {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
@@ -176,38 +86,43 @@
       text-align: left;
       background-color: #4CAF50;
       color: white;
-    }    
-</style>
+    }
+  code {
+    font-size: 80%;
+  }
+  </style>
+
 </head>
+
 <body>
 
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="https://www.f5.com/">F5</a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="/dashboard">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="https://www.f5.com/">F5</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/dashboard">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Contact</a>
+      </li>
+    </ul>
   </div>
 </nav>
 
-{% block content %}
-{% endblock content %}
-
-<footer class="container-fluid text-center">
-  <p float="left;">All Rights Reservered @Ctrl-Alt-Del</p>
-</footer>
-
+<div class="container-fluid body-content">
+  {% block content %}
+  {% endblock content %}
+</div>
+<br>
+<br>
 
 <script>
 // Get the modal
@@ -239,5 +154,15 @@ $(document).ready(function(){
   });
 });
 </script>
+
 </body>
+<!-- Footer-->
+<footer class="footer">
+
+  <!-- Copyright -->
+  <div class="text-center container" style="color:white"> © 2020 Copyright:
+    <a href="https://github.com/veeramalla-f5/officeassistant"> @Ctrl-Alt-Del</a>
+  </div>
+  <!-- Copyright -->
+</footer>
 </html>
