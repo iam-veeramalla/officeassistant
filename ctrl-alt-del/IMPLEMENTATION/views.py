@@ -7,6 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
+from django.views.generic import ListView
 from IMPLEMENTATION.forms import SignUpForm
 from IMPLEMENTATION.models import Employee
 from IMPLEMENTATION.models import Request
@@ -34,7 +35,7 @@ def registration(request):
     template_response_employee = 'registration.html'
     template_reponse_manager = 'approval.html'
     
-    username = request.POST.get('uname')
+    username = request.user.username
     managerDetails = Employee.objects.filter(employeeID=username).values_list('mgrID', 'mgrName')
     managerID = managerDetails[0][0]
     
@@ -71,4 +72,27 @@ def updateValidRequest(request):
     record = Request(employeeID=id, username=username, managerID=managerID, managerName=managerName, date=today, zone=zone, purpose=purpose, status=status)
     record.save()
     
-    return render(request, template_response, {'employeeID': id, 'username': username, 'managerID': managerID, 'managerName': managerName, 'date': today, 'zone': zone, 'purpose': purpose, 'status': status})  
+    return render(request, template_response, {'employeeID': id, 'username': username, 'managerID': managerID, 'managerName': managerName, 'date': today, 'zone': zone, 'purpose': purpose, 'status': status})
+
+
+@login_required()
+@csrf_exempt
+def dashboard(request):
+    # response html for employee and manager
+    dashboard_template = "emp_home.html"
+
+    username = request.user.username
+    name = Employee.objects.filter(employeeID=username).values_list("employeeName")
+    name = name[0][0]
+
+    return render(request, dashboard_template, {'fullname': name})
+
+
+
+class RequetsView(ListView):
+    model = Request
+    # paginate_by = 10
+    template_name = "requests.html"
+
+    def get_queryset(self):
+        return Request.objects.filter(employeeID=self.request.user.username)

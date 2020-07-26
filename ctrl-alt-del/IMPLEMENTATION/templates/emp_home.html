@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2><center>Welcome {{fullname}}</center></h2>
+
+<!--<form class="modal-content animate" action="/registration" method="post">{% csrf_token %}-->
+<!--                <div class="container" style="width:auto;">-->
+<!--                    <input type="hidden" name="uname" value="{{username}}">-->
+<!--                    <input type="submit" id="newreq" value="New Request" class="btn">-->
+<!--                </div>-->
+<!--</form>-->
+
+
+<form class="modal-content animate" action="/registration">
+                <div class="container" style="width:auto;">
+                    <input type="submit" id="newreq" value="New Request" class="btn">
+                </div>
+</form>
+
+<form class="modal-content animate" action="/requests">
+                <div class="container" style="width:auto;">
+                    <input type="submit" id="getreqs" value="View Requests" class="btn">
+                </div>
+</form>
+
+{% endblock content %}

@@ -132,7 +132,7 @@ STATIC_ROOT="/Users/veeramalla/opt/SiteManagement/ctrl-alt-del/IMPLEMENTATION/st
 #STATIC_ROOT = os.path.join(BASE_DIR, "IMPLEMENTATION/static")
 
 
-LOGIN_REDIRECT_URL = '/registration'
+LOGIN_REDIRECT_URL = '/dashboard'
 
 EMAIL_HOST = '<>'
 EMAIL_PORT = 25
