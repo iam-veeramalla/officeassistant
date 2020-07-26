@@ -57,8 +57,7 @@ def createRequest(request):
     template_response = 'acknowledge.html'
     
     #Update Employee Table with the record.
-    id = request.POST.get('employeeid')
-    username = request.POST.get('FullName')
+    id = request.user.username
     purpose = request.POST.get('purpose')
     area = request.POST.get('area')
     zone = request.POST.get('zone')
@@ -67,9 +66,10 @@ def createRequest(request):
     fmt = '%Y-%m-%d'
     today = datetime.datetime.now().strftime(fmt)
     
-    managerDetails = Employee.objects.filter(employeeID=id).values_list('mgrID', 'mgrName')
+    managerDetails = Employee.objects.filter(employeeID=id).values_list('mgrID', 'mgrName', 'employeeName')
     managerID = managerDetails[0][0]
     managerName = managerDetails[0][1]
+    username = managerDetails[0][2]
     
     record = Request(employeeID=id, username=username, managerID=managerID, managerName=managerName, date=today, zone=zone, purpose=purpose, status=status)
     record.save()
