@@ -204,6 +204,7 @@ $(document).ready(function(){
     data = {data:record,action:"approve"}
   $.post("/update_request", JSON.stringify(data), function(result){
       console.log(result)
+      window.location.href = '/dashboard';
     });
   });
   $(".reject-button").click(function(){
@@ -211,6 +212,7 @@ $(document).ready(function(){
     data = {data:record,action:"reject"}
   $.post("/update_request", JSON.stringify(data), function(result){
       console.log(result)
+      window.location.href = '/dashboard';
     });
   });
 });
