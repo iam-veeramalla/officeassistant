@@ -57,7 +57,7 @@ def createRequest(request):
     template_response = 'acknowledge.html'
     
     #Update Employee Table with the record.
-    id = request.user.username
+    empID = request.user.username
     purpose = request.POST.get('purpose')
     area = request.POST.get('area')
     zone = request.POST.get('zone')
@@ -66,15 +66,15 @@ def createRequest(request):
     fmt = '%Y-%m-%d'
     today = datetime.datetime.now().strftime(fmt)
     
-    managerDetails = Employee.objects.filter(employeeID=id).values_list('mgrID', 'mgrName', 'employeeName')
+    managerDetails = Employee.objects.filter(employeeID=empID).values_list('mgrID', 'mgrName', 'employeeName')
     managerID = managerDetails[0][0]
     managerName = managerDetails[0][1]
     username = managerDetails[0][2]
     
-    record = Request(employeeID=id, username=username, managerID=managerID, managerName=managerName, date=today, zone=zone, purpose=purpose, status=status)
+    record = Request(employeeID=empID, username=username, managerID=managerID, managerName=managerName, date=today, zone=zone, purpose=purpose, status=status)
     record.save()
     
-    return render(request, template_response, {'employeeID': id, 'username': username, 'managerID': managerID, 'managerName': managerName, 'date': today, 'zone': zone, 'purpose': purpose, 'status': status})
+    return render(request, template_response, {'id': record.id, 'employeeID': empID, 'username': username, 'managerID': managerID, 'managerName': managerName, 'date': today, 'zone': zone, 'purpose': purpose, 'status': status})
 
 
 @login_required()
@@ -83,8 +83,8 @@ def updateRequest(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
     import datetime
-    empid = eval(body['data'])[0]
-    req = Request.objects.filter(employeeID=empid)
+    reqid = eval(body['data'])[0]
+    req = Request.objects.filter(id=reqid)
     action = body['action']
     status = PENDING
     if action == 'approve':
@@ -115,7 +115,7 @@ def dashboard(request):
     if manager_id == "NA":
         # IF there is no managerID that means he/she is a manager.
         pending_reqs = Request.objects.filter(
-            managerID=username).values_list('employeeID', 'username', 'date',
+            managerID=username).values_list('id', 'employeeID', 'username', 'date',
                                             'zone', 'purpose', 'status')
         return render(request, mgr_dashboard_template,
                       {'pendingApproval': pending_reqs,
