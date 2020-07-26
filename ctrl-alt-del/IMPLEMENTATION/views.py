@@ -29,14 +29,29 @@ class MainView(TemplateView):
 @login_required()
 @csrf_exempt
 def registration(request):
-       
-    template_response = 'registration.html'
-    return render(request, template_response)
+    
+    # response html for employee and manager   
+    template_response_employee = 'registration.html'
+    template_reponse_manager = 'approval.html'
+    
+    username = request.POST.get('uname')
+    managerDetails = Employee.objects.filter(employeeID=username).values_list('mgrID', 'mgrName')
+    managerID = managerDetails[0][0]
+    
+    if managerID == "NA":
+        # IF there is no managerID that means he/she is a manager.
+        pendingApproval = Request.objects.filter(managerID=username).values_list('employeeID', 'username', 'date', 'zone', 'purpose', 'status')
+        return render(request, template_reponse_manager, {'pendingApproval': pendingApproval, 'length_records': len(pendingApproval)})
+    else:
+        return render(request, template_response_employee)
 
 
 @login_required()
 @csrf_exempt
 def updateValidRequest(request):
+    
+    #Response to be sent to this
+    template_response = 'acknowledge.html'
     
     #Update Employee Table with the record.
     id = request.POST.get('employeeid')
@@ -49,5 +64,11 @@ def updateValidRequest(request):
     fmt = '%Y-%m-%d'
     today = datetime.datetime.now().strftime(fmt)
     
-    record = Request(employeeID=id, mgrID=123, date=today, zone=zone, purpose=purpose, status=status)
+    managerDetails = Employee.objects.filter(employeeID=id).values_list('mgrID', 'mgrName')
+    managerID = managerDetails[0][0]
+    managerName = managerDetails[0][1]
+    
+    record = Request(employeeID=id, username=username, managerID=managerID, managerName=managerName, date=today, zone=zone, purpose=purpose, status=status)
     record.save()
+    
+    return render(request, template_response, {'employeeID': id, 'username': username, 'managerID': managerID, 'managerName': managerName, 'date': today, 'zone': zone, 'purpose': purpose, 'status': status})  
