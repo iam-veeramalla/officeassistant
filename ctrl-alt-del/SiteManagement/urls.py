@@ -23,8 +23,10 @@ from django.conf.urls.static import static
 
 urlpatterns = patterns('',
                        url(r'^admin/', admin.site.urls),
+                       url(r'^play/$', MainView.as_view()),
                        url(r'^$', auth_views.login, {'template_name': 'login.html'}, name='login'),
                        url(r'login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
-                       url(r'registration$', 'IMPLEMENTATION.views.registration', name='registration'),
+                       url(r'^registration$', 'IMPLEMENTATION.views.registration', name='registration'),
+                       url(r'updateValidRequest$', 'IMPLEMENTATION.views.updateValidRequest', name='updateValidRequest'),
                        url('^', include('django.contrib.auth.urls')),
                        ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

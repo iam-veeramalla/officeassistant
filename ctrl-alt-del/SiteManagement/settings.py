@@ -70,8 +70,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'SiteManagement.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
@@ -134,7 +132,7 @@ STATIC_ROOT="/Users/veeramalla/opt/SiteManagement/ctrl-alt-del/IMPLEMENTATION/st
 #STATIC_ROOT = os.path.join(BASE_DIR, "IMPLEMENTATION/static")
 
 
-LOGIN_REDIRECT_URL = '/play'
+LOGIN_REDIRECT_URL = '/registration'
 
 EMAIL_HOST = '<>'
 EMAIL_PORT = 25

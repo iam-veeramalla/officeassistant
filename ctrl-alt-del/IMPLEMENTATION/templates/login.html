@@ -188,7 +188,7 @@ his/her manager approves the request.
       <center><h5>Had Issues logging in? Use Contact tab</h5></center>
       <br></br><br></br><br></br>
       <div id="id01" class="modal">
-            <form class="modal-content animate" action="/registration" method="post">
+            <form class="modal-content animate" action="/registration" method="post">{% csrf_token %}
                 <div class="imgcontainer">
                 <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
                 <center><h3>Login to Continue</h3></center>
@@ -202,6 +202,7 @@ his/her manager approves the request.
                 <input type="password" placeholder="Enter Password" name="psw" required>
                     
                 <button type="submit">Submit</button>
+                <input type="hidden" name="validation" value="onlyfromloginpage"/>
                 <label>
                     <input type="checkbox" checked="checked" name="remember"> Remember me
                 </label>
