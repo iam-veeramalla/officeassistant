@@ -1,3 +1,6 @@
 .DS_Store
 .vscode/
 hackathon-django-1.11/
+.idea
+*.pyc
+
