@@ -31,7 +31,7 @@ ALLOWED_HOSTS = ['10.4.24.46']
 # Application definition
 
 INSTALLED_APPS = [
-    'IMPLEMENTATION',
+    'core',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -128,8 +128,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT="/Users/veeramalla/opt/SiteManagement/ctrl-alt-del/IMPLEMENTATION/static"
-#STATIC_ROOT = os.path.join(BASE_DIR, "IMPLEMENTATION/static")
+STATIC_ROOT="/Users/veeramalla/opt/SiteManagement/ctrl-alt-del/core/static"
+#STATIC_ROOT = os.path.join(BASE_DIR, "core/static")
 
 
 LOGIN_REDIRECT_URL = '/dashboard'

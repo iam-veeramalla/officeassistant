@@ -25,14 +25,11 @@
             <tbody>
             {% for record in pendingApproval %}
                 <tr>
-                    {% for element in record %}
+                    {% for element in record|slice:"1:" %}
                         <td> {{ element }} </td> 
                     {% endfor %}
                     <td>
-<!--                        <button type="button" onclick="" class="btn-success">Approve</button>-->
-<!--                         <button type="submit" value={{record}} onclick="location.href='{% url 'dashboard' %}'" name='mybtn2'>Approve</button>-->
-<!--                        <button type="button" class="btn-danger">Reject</button>-->
-                        <button class="approve-button btn-success" data-record="{{record}}">Approve</button>
+                      <button class="approve-button btn-success" data-record="{{record}}">Approve</button>
                       <button class="reject-button btn-danger" data-record="{{record}}">Reject</button>
                     </td>
                 </tr>
