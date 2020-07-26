@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
 from IMPLEMENTATION.views import MainView
+from IMPLEMENTATION.views import RequetsView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -27,6 +28,9 @@ urlpatterns = patterns('',
                        url(r'^$', auth_views.login, {'template_name': 'login.html'}, name='login'),
                        url(r'login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
                        url(r'^registration$', 'IMPLEMENTATION.views.registration', name='registration'),
-                       url(r'updateValidRequest$', 'IMPLEMENTATION.views.updateValidRequest', name='updateValidRequest'),
+                       url(r'dashboard$', 'IMPLEMENTATION.views.dashboard', name='dashboard'),
+                       url(r'requests', RequetsView.as_view(), name="requests"),
+                       url(r'create_request', 'IMPLEMENTATION.views.createRequest', name='create_request'),
+                       url(r'update_request', 'IMPLEMENTATION.views.updateRequest', name='update_request'),
                        url('^', include('django.contrib.auth.urls')),
                        ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

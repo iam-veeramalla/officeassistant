@@ -49,7 +49,7 @@ opacity: 0.8;
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
+        <li class="active"><a href="/dashboard">Home</a></li>
       </ul>
     </div>
   </div>
@@ -70,15 +70,19 @@ opacity: 0.8;
             </div>
             <div class="col-md-8 py-5 border">
                 <h4 class="pb-4">Please fill with your details</h4>
-                <form action="/updateValidRequest" method="post">{% csrf_token %}
+                <form action="/create_request" method="post">{% csrf_token %}
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                          <input id="FullName" name="FullName" placeholder="FullName" class="form-control" type="text">
+                          <input id="FullName" name="FullName" placeholder="FullName" class="form-control" type="text"
+                            value={{fullname}} disabled
+                          >
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                          <input id="employeeid" name="employeeid" placeholder="EmployeeID" class="form-control" type="text">
+                          <input id="employeeid" name="employeeid" placeholder="EmployeeID"
+                                 value={{employeeID}} disabled
+                                 class="form-control" type="text">
                         </div>
                         <div class="form-group col-md-6">
                           <input type="email" class="form-control" id="inputEmail4" name="inputEmail4" placeholder="Email">
