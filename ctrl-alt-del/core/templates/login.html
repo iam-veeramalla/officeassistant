@@ -1,240 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Office Assistant</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <style>
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
 
-    body {font-family: Arial, Helvetica, sans-serif;}
-    /* Remove the navbar's default margin-bottom and rounded borders */ 
-    .navbar {
-      margin-bottom: 0;
-      border-radius: 0;
-    }
-    
-    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-    .row.content {height: 450px}
-    
-    /* Set gray background color and 100% height */
-    .sidenav {
-      padding-top: 20px;
-      background-color: #f1f1f1;
-      min-height: 150%;
-    }
-
-    /* Set black background color, white text and some padding */
-    footer {
-      background-color: #555;
-      color: white;
-      padding: 15px;
-    }
-
-    input[type=text], input[type=password] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    }
-
-    button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    }
-
-    button:hover {
-    opacity: 0.8;
-    }
-
-    /* cancel button */
-    .cancelbtn {
-    width: auto;
-    padding: 10px 18px;
-    background-color: #f44336;
-    }
-
-    .imgcontainer {
-    text-align: center;
-    margin: 24px 0 12px 0;
-    position: relative;
-    }
-
-    img.avatar {
-    width: 40%;
-    border-radius: 50%;
-    }
-
-    .container {
-    padding: 16px;
-    }
-
-    span.psw {
-    float: right;
-    padding-top: 16px;
-    }
-
-    .modal {
-    display: none; 
-    position: fixed; 
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
-    padding-top: 60px;
-    }
-
-    .modal-content {
-    background-color: #fefefe;
-    margin: 5% auto 15% auto;
-    border: 1px solid #888;
-    width: 80%; 
-    }
-
-    .close {
-    position: absolute;
-    right: 25px;
-    top: 0;
-    color: #000;
-    font-size: 35px;
-    font-weight: bold;
-    }
-
-    .close:hover,
-    .close:focus {
-    color: red;
-    cursor: pointer;
-    }
-
-    .animate {
-    -webkit-animation: animatezoom 0.6s;
-    animation: animatezoom 0.6s
-    }
-
-    @-webkit-keyframes animatezoom {
-    from {-webkit-transform: scale(0)} 
-    to {-webkit-transform: scale(1)}
-    }
-    
-    @keyframes animatezoom {
-    from {transform: scale(0)} 
-    to {transform: scale(1)}
-    }
-
-    @media screen and (max-width: 300px) {
-        span.psw {
-            display: block;
-            float: none;
-        }
-        .cancelbtn {
-            width: 100%;
-        }
-    }
-</style>
-</head>
-<body>
-
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
-      </button>
-      <a class="navbar-brand" href="https://www.f5.com/">F5</a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-  
-<div class="container-fluid text-center">    
-  <div class="row content">
-    <div class="col-sm-2 sidenav">
-    </div>
-    <div class="col-sm-8 text-left"> 
-      <h1><center>F5 Site Managament Office Assistant</center></h1>
-
-      <h3 style="color:red;"><marquee behavior="scroll" direction="left" scrollamount="12"> *** We are currently running with 50 percent capacity. Please do not apply if you are sick or primary contact of any covid positive ***</marquee></h3>
-      <br></br>
-      <p>This Application helps in reopening the organisations with limited capacity. The Limited Capacity[Percentage of Staff] can be controlled by the admin. 
-        The Percentage of staff choosen by admin is called Magic Number.This Magic Number will be divided equally between the managers with inthe organisation.
-        Employee can request a pass to attend office for a specific day through this portal. His Request will move to pending approval state and will be approved once 
-his/her manager approves the request.
-      </p>
-      <hr>
-      <br></br><br></br><br></br><br></br>
-      <center><button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
-      </center>
-      <center><h5>Had Issues logging in? Use Contact tab</h5></center>
-      <br></br><br></br><br></br>
-      <div id="id01" class="modal">
-            <form class="modal-content animate" action="/dashboard" method="post">{% csrf_token %}
-                <div class="imgcontainer">
-                <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
-                <center><h3>Login to Continue</h3></center>
-                </div>
-
-                <div class="container">
-                <label for="uname"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" id="uname" name="uname" required>
-
-                <label for="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="psw" required>
-                    
-                <button type="submit">Submit</button>
-                <input type="hidden" name="validation" value="onlyfromloginpage"/>
-                <label>
-                    <input type="checkbox" checked="checked" name="remember"> Remember me
-                </label>
-                </div>
-
-                <div class="container" style="background-color:#f1f1f1">
-                <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-                <span class="psw">Forgot <a href="#">password?</a></span>
-                </div>
+{% block content %}
+    <div id="content-container" class="container-fluid text-center">
+    <div class="row content">
+        <div class="col-sm-2 sidenav">
+        </div>
+        <div class="lgn-container col-lg-8">
+            <form id="login-form" method="post" 
+                  action="{% url 'django.contrib.auth.views.login' %}">
+                {% csrf_token %}
+                 <h1><center>F5 Site Managament Office Assistant</center></h1>
+                <h3 style="color:red;"><marquee behavior="scroll" direction="left" scrollamount="12"> *** We are currently running with 50 percent capacity. Please do not apply if you are sick or primary contact of any covid positive ***</marquee></h3>
+                <br></br>
+                <table class="center" id="customers">
+                    <tr>
+                        <td><label for="id_username">Username</label></td>
+                        <td><input id="id_username" name="username" 
+                                   type="text" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="id_password">Password</label></td>
+                        <td><input id="id_password" name="password" 
+                                   type="password" class="form-control"></td>
+                    </tr>
+                </table>
+                {% if form.errors %}
+                    <p class=" label label-danger">
+                        Your username and password didn't match. 
+                        Please try again.
+                    </p>
+                {% endif %}
+                <br></br>
+                <input type="submit" value="Login" 
+                       class="btn btn-primary" />
+                <input type="hidden" name="next" value="{{ next }}" />
             </form>
         </div>
+        <div class="col-sm-2 sidenav">
+        </div>
     </div>
-    <div class="col-sm-2 sidenav">
     </div>
-  </div>
-</div>
-
-<footer class="container-fluid text-center">
-  <p float="left;">All Rights Reservered @Ctrl-Alt-Del</p>
-</footer>
-
-
-<script>
-// Get the modal
-var modal = document.getElementById('id01');
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-</script>
-</body>
-</html>
+{% endblock content %}
