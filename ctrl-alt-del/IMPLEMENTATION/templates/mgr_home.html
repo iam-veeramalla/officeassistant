@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container-fluid text-center">    
+  <div class="row content">
+    <div class="col-sm-2 sidenav">
+    </div>
+    <div class="col-sm-8 text-left"> 
+        <br></br>
+        <center><h2>Approvals Pending at Manager Level</h2></center>
+        <br></br><br></br>
+       <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th style="text-align:center">EmployeeID</th>
+                    <th style="text-align:center">Username</th>
+                    <th style="text-align:center">Date</th>
+                    <th style="text-align:center">Zone</th>
+                    <th style="text-align:center">Purpose</th>
+                    <th style="text-align:center">Status</th>
+                    <th style="text-align:center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for record in pendingApproval %}
+                <tr>
+                    {% for element in record %}
+                        <td> {{ element }} </td> 
+                    {% endfor %}
+                    <td>
+<!--                        <button type="button" onclick="" class="btn-success">Approve</button>-->
+<!--                         <button type="submit" value={{record}} onclick="location.href='{% url 'dashboard' %}'" name='mybtn2'>Approve</button>-->
+<!--                        <button type="button" class="btn-danger">Reject</button>-->
+                        <button class="approve-button btn-success" data-record="{{record}}">Approve</button>
+                      <button class="reject-button btn-danger" data-record="{{record}}">Reject</button>
+                    </td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+
+    <div class="col-sm-2 sidenav">
+    </div>
+
+  </div>
+</div>
+
+{% endblock content %}

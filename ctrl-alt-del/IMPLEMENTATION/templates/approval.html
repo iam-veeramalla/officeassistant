@@ -243,14 +243,14 @@ $(document).ready(function(){
   $(".approve-button").click(function(){
     record = $(this).data("record")
     data = {data:record,action:"approve"}
-  $.post("/action", JSON.stringify(data), function(result){
+  $.post("/update_request", JSON.stringify(data), function(result){
       console.log(result)
     });
   });
   $(".reject-button").click(function(){
     record = $(this).data("record")
     data = {data:record,action:"reject"}
-  $.post("/action", JSON.stringify(data), function(result){
+  $.post("/update_request", JSON.stringify(data), function(result){
       console.log(result)
     });
   });

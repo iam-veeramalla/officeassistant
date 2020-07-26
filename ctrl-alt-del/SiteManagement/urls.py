@@ -30,6 +30,7 @@ urlpatterns = patterns('',
                        url(r'^registration$', 'IMPLEMENTATION.views.registration', name='registration'),
                        url(r'dashboard$', 'IMPLEMENTATION.views.dashboard', name='dashboard'),
                        url(r'requests', RequetsView.as_view(), name="requests"),
-                       url(r'updateValidRequest$', 'IMPLEMENTATION.views.updateValidRequest', name='updateValidRequest'),
+                       url(r'create_request', 'IMPLEMENTATION.views.createRequest', name='create_request'),
+                       url(r'update_request', 'IMPLEMENTATION.views.updateRequest', name='update_request'),
                        url('^', include('django.contrib.auth.urls')),
                        ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -197,6 +197,23 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 }
+$(document).ready(function(){
+  console.log("calling...")
+  $(".approve-button").click(function(){
+    record = $(this).data("record")
+    data = {data:record,action:"approve"}
+  $.post("/update_request", JSON.stringify(data), function(result){
+      console.log(result)
+    });
+  });
+  $(".reject-button").click(function(){
+    record = $(this).data("record")
+    data = {data:record,action:"reject"}
+  $.post("/update_request", JSON.stringify(data), function(result){
+      console.log(result)
+    });
+  });
+});
 </script>
 </body>
 </html>
