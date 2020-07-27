@@ -135,3 +135,11 @@ STATICFILES_DIRS = (
 )
 
 LOGIN_REDIRECT_URL = '/dashboard'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'abhishek.veeramalla@gmail.com'
+EMAIL_HOST_PASSWORD = '9059889771'
+EMAIL_USE_SSL = False

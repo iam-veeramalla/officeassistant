@@ -12,6 +12,7 @@ from django.views.generic import ListView
 from .forms import SignUpForm
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
+from django.core.mail import send_mail
 #from django.contrib.auth.forms import UserCreationForm
 
 from .forms import DateForm
@@ -99,6 +100,20 @@ def updateRequest(request):
         status = APPROVED
     if action == 'reject':
         status = REJECTED
+    
+    #Change this
+    #emailId = Employee.objects.filter(employeeID=req.employeeID).values_list(
+    #    "emaliID",
+    #)[0][0]
+    emailId = "subbuv226@gmail.com"
+     
+    send_mail(
+    'Subject here',
+    'Here is the message.',
+    'abhishek.veeramalla@gmail.com',
+    [emailId],
+    fail_silently = False,
+    )
         
     req.update(status=status)   
     return redirect("/dashboard")
@@ -146,7 +161,6 @@ def dashboard(request):
                        'date_form': date_form})
     else:
         return render(request, emp_dashboard_template, {'fullname': name})
-
 
 class RequetsView(ListView):
     model = Request
