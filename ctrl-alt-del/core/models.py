@@ -7,6 +7,7 @@ class Employee(models.Model):
     employeeName = models.CharField(max_length=50)
     mgrID = models.CharField(max_length=10) # fkey: Employee with role mgr
     mgrName = models.CharField(max_length=50)
+    role = models.CharField(max_length=10)
 
 
 class Request(models.Model):
