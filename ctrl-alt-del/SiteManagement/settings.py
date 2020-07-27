@@ -128,14 +128,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# STATIC_ROOT="/Users/veeramalla/opt/SiteManagement/ctrl-alt-del/core/static"
+STATIC_ROOT="/Users/veeramalla/opt/SiteManagement/ctrl-alt-del/core/static"
 # STATIC_ROOT = os.path.join(BASE_DIR, "core/static")
 STATICFILES_DIRS = (
     'static',
 )
 
 LOGIN_REDIRECT_URL = '/dashboard'
-
-EMAIL_HOST = '<>'
-EMAIL_PORT = 25
-DEFAULT_FROM_EMAIL = '<>'

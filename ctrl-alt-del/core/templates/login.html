@@ -1,30 +1,38 @@
 {% extends 'base.html' %}
+{%load static %}
 {% block title %}Login{% endblock %}
 
 {% block content %}
     <div id="content-container" class="container-fluid text-center">
     <div class="row content">
         <div class="col-sm-2 sidenav">
+            <br></br>
+            <img src="{% static 'images/f5-logo.png'%}" alt="f5-logo" width="225" height="225">
         </div>
         <div class="lgn-container col-lg-8">
-            <form id="login-form" method="post" 
+            <form class="form-signin" id="login-form" method="post" 
                   action="{% url 'django.contrib.auth.views.login' %}">
                 {% csrf_token %}
-                 <h1><center>F5 Site Managament Office Assistant</center></h1>
-                <h3 style="color:red;"><marquee behavior="scroll" direction="left" scrollamount="12"> *** We are currently running with 50 percent capacity. Please do not apply if you are sick or primary contact of any covid positive ***</marquee></h3>
                 <br></br>
-                <table class="center" id="customers">
-                    <tr>
-                        <td><label for="id_username">Username</label></td>
-                        <td><input id="id_username" name="username" 
-                                   type="text" class="form-control"></td>
-                    </tr>
-                    <tr>
-                        <td><label for="id_password">Password</label></td>
-                        <td><input id="id_password" name="password" 
-                                   type="password" class="form-control"></td>
-                    </tr>
-                </table>
+                 <h1><center>F5 Site Managament Office Assistant</center></h1>
+  
+                <br></br>
+                <!-- Login Form Content-->
+                <img class="mb-4" src="/docs/4.5/assets/brand/bootstrap-solid.svg" alt="" width="50" height="50">
+                <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+                <label for="id_username" class="sr-only">Username</label>
+                <center><input id="id_username" name="username" type="text" class="form-control" placeholder="username" required autofocus></center>
+                <label for="id_password" class="sr-only">Password</label>
+                <center><input type="password" id="id_password" name="password" class="form-control" placeholder="Password" required></center>
+                <div class="checkbox mb-3">
+                    <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                    </label>
+                </div>
+                <input type="submit" value="Login" 
+                       class="btn btn-primary" />
+                <input type="hidden" name="next" value="{{ next }}" />
+                <p class="mt-5 mb-3 text-muted">&copy; Ctrl-Alt-Del</p>
                 {% if form.errors %}
                     <p class=" label label-danger">
                         Your username and password didn't match. 
@@ -32,10 +40,8 @@
                     </p>
                 {% endif %}
                 <br></br>
-                <input type="submit" value="Login" 
-                       class="btn btn-primary" />
-                <input type="hidden" name="next" value="{{ next }}" />
             </form>
+                <h3 style="color:red;"><marquee behavior="scroll" direction="left" scrollamount="12"> *** We are currently running with 50 percent capacity. Please do not apply if you are sick or primary contact of any covid positive ***</marquee></h3>
         </div>
         <div class="col-sm-2 sidenav">
         </div>
