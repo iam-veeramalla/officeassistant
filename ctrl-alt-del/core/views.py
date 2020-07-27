@@ -3,19 +3,20 @@
 import datetime
 import json
 
-from django.http import HttpResponse
+from django.http import HttpResponsePermanentRedirect
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from django.views.generic import ListView
 from .forms import SignUpForm
-from .models import Employee
-from .models import Request
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 #from django.contrib.auth.forms import UserCreationForm
 
+from .forms import DateForm
+from .models import Employee
+from .models import Request
 
 # PENDING = "PENDING"
 PENDING = "Pending Approval"
@@ -40,13 +41,15 @@ def registration(request):
     
     # response html for employee and manager   
     template_response_employee = 'registration.html'
+    date_form = DateForm()
 
     username = request.user.username
     details = Employee.objects.filter(employeeID=username).values_list(
         "employeeName")
     fullname = details[0][0]
     return render(request, template_response_employee, {'employeeID': username,
-                                                        'fullname': fullname})
+                                                        'fullname': fullname,
+                                                        'date_form': date_form})
 
 
 @login_required()
@@ -63,18 +66,19 @@ def createRequest(request):
     zone = request.POST.get('zone')
     status=PENDING
     # Date
-    fmt = '%Y-%m-%d'
-    today = datetime.datetime.now().strftime(fmt)
+    date = request.POST.get('date')
+
+    date = datetime.datetime.strptime(date, '%Y-%m-%d')
     
     managerDetails = Employee.objects.filter(employeeID=empID).values_list('mgrID', 'mgrName', 'employeeName')
     managerID = managerDetails[0][0]
     managerName = managerDetails[0][1]
     username = managerDetails[0][2]
     
-    record = Request(employeeID=empID, username=username, managerID=managerID, managerName=managerName, date=today, zone=zone, purpose=purpose, status=status)
+    record = Request(employeeID=empID, username=username, managerID=managerID, managerName=managerName, date=date, zone=zone, purpose=purpose, status=status)
     record.save()
     
-    return render(request, template_response, {'id': record.id, 'employeeID': empID, 'username': username, 'managerID': managerID, 'managerName': managerName, 'date': today, 'zone': zone, 'purpose': purpose, 'status': status})
+    return render(request, template_response, {'id': record.id, 'employeeID': empID, 'username': username, 'managerID': managerID, 'managerName': managerName, 'date': date, 'zone': zone, 'purpose': purpose, 'status': status})
 
 
 @login_required()
@@ -82,7 +86,6 @@ def createRequest(request):
 def updateRequest(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
-    import datetime
     reqid = eval(body['data'])[0]
     req = Request.objects.filter(id=reqid)
     action = body['action']
@@ -91,7 +94,7 @@ def updateRequest(request):
         status = APPROVED
     if action == 'reject':
         status = REJECTED
-
+        
     req.update(status=status)
     return redirect("/dashboard")
 
@@ -114,12 +117,22 @@ def dashboard(request):
 
     if manager_id == "NA":
         # IF there is no managerID that means he/she is a manager.
+
+        if request.method == "GET":
+            date = datetime.date.today()
+        else:
+            date = request.POST.get('date')
+            date = datetime.datetime.strptime(date, '%Y-%m-%d')
+
+        date_form = DateForm(initial={'date': date})
+
         pending_reqs = Request.objects.filter(
-            managerID=username).values_list('id', 'employeeID', 'username', 'date',
-                                            'zone', 'purpose', 'status')
+            managerID=username, date=date).values_list('id', 'employeeID', 'username',
+                                            'date', 'zone', 'purpose', 'status')
         return render(request, mgr_dashboard_template,
                       {'pendingApproval': pending_reqs,
-                       'length_records': len(pending_reqs)})
+                       'length_records': len(pending_reqs),
+                       'date_form': date_form})
     else:
         return render(request, emp_dashboard_template, {'fullname': name})
 
