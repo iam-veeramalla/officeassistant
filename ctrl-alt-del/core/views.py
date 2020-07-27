@@ -170,17 +170,14 @@ def dashboard(request):
             template = hr_dashboard_template
 
         total_emp = len(emps)
-        active_emps = len(set([k[0] for k in approved_reqs]))
-        import math
-        active_share = math.ceil(float(active_emps*100)/total_emp)
+        approve_emps = len(set([k[0] for k in approved_reqs]))
 
         return render(request, template,
                       {'pendingApproval': pending_reqs,
                        'length_records': len(pending_reqs),
                        'date_form': date_form,
-                       'total_emp': total_emp,
-                       'active_emp': active_emps,
-                       'active_emp_share': active_share})
+                       'reject_emps': total_emp-approve_emps,
+                       'approve_emps': approve_emps})
     else:
         return render(request, emp_dashboard_template, {'fullname': name})
 
