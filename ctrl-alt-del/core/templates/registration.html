@@ -1,59 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Office Assistant</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+{% extends "base.html" %}
 
-
-<!------ Include the above in your HEAD tag ---------->
-
-<style>
-img {width:100%;}
-
-/* Set black background color, white text and some padding */
-footer {
-    background-color: #555;
-    color: white;
-    padding: 15px;
-}
-
-button {
-background-color: #4CAF50;
-color: white;
-padding: 14px 20px;
-margin: 8px 0;
-border: none;
-cursor: pointer;
-width: 100%;
-}
-
-button:hover {
-opacity: 0.8;
-}
-
-</style>
-
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
-      </button>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="/dashboard">Home</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
+{% block content %}
 
 
 <section class="testimonial py-5" id="testimonial">
@@ -85,9 +32,15 @@ opacity: 0.8;
                                  class="form-control" type="text">
                         </div>
                         <div class="form-group col-md-6">
-                          <input type="email" class="form-control" id="inputEmail4" name="inputEmail4" placeholder="Email">
+                            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                                {{ date_form.date }}
+<!--                            <input type="text" id="date" class="form-control datetimepicker-input " data-target="#datetimepicker2"/>-->
+                            <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                            </div>
+                            </div>
                         </div>
-                    </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
                           <input id="purpose" name="purpose" placeholder="PurposeOfVisit" class="form-control" type="text">
@@ -99,7 +52,7 @@ opacity: 0.8;
                         </div>
                         <div class="form-group col-md-6">
                                   
-                                  <select id="zone" name="zone"  class="form-control">
+                                  <select id="zone" name="zone"  class="form-control" >
                                     <option selected>Choose ...</option>
                                     <option> Green</option>
                                     <option> Orange</option>
@@ -125,8 +78,8 @@ opacity: 0.8;
                           </div>
                     </div>
                     
-                    <div class="form-row">
-                        <button type="submit" id="submit" class="btn btn-danger">Submit</button>
+                    <div class="form-row justify-content-center" >
+                        <button type="submit" id="submit" class="btn btn-primary float-right">Submit</button>
                     </div>
                 </form>
             </div>
@@ -134,13 +87,4 @@ opacity: 0.8;
     </div>
 </section>
 
-<div>
-  <br></br><br></br>
-</div>
-
-<footer class="container-fluid text-center">
-  <p float="left;">All Rights Reservered @Ctrl-Alt-Del</p>
-</footer>
-
-</head>
-</html>
+{% endblock content %}
