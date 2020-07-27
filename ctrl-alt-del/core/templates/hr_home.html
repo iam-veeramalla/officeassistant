@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container-fluid text-center">
+  <div class="row content">
+    <div class="col-sm-2 sidenav">
+    </div>
+    <div class="col-sm-8 text-left">
+        <br></br>
+        <center><h2>Approvals For HR Review</h2></center>
+        <br></br><br></br>
+        <form action="/dashboard" method="post">{% csrf_token %}
+            <div class="form-row" >
+                <div class="input-group date col-sm-4" id="datetimepicker1" data-target-input="nearest">
+<!--            <input type="text" class="form-control datetimepicker-input " data-target="#datetimepicker1"/>-->
+            {{ date_form.date }}
+            <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+            </div>
+            </div>
+                <button type="submit" id="submit" class="btn btn-primary float-right">Submit</button>
+            </div>
+
+        </form>
+
+        <br>
+       <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th style="text-align:center">EmployeeID</th>
+                    <th style="text-align:center">Username</th>
+                    <th style="text-align:center">Date</th>
+                    <th style="text-align:center">Zone</th>
+                    <th style="text-align:center">Purpose</th>
+                    <th style="text-align:center">Status</th>
+                    <th style="text-align:center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for record in pendingApproval %}
+                <tr>
+                    {% for element in record|slice:"1:" %}
+                        <td> {{ element }} </td>
+                    {% endfor %}
+                    <td style="text-align:center">
+                      <button type="button" class="approve-button btn btn-success" data-record="{{record}}">Approve</button>
+                      <button type="button" class="reject-button btn btn-danger" data-record="{{record}}">Reject</button>
+                    </td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+
+    <div class="col-sm-2 sidenav">
+    </div>
+
+  </div>
+</div>
+
+{% endblock content %}

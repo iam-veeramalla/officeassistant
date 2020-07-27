@@ -18,10 +18,15 @@ from .forms import DateForm
 from .models import Employee
 from .models import Request
 
-# PENDING = "PENDING"
+# Request status
 PENDING = "Pending Approval"
 APPROVED = "Approved"
 REJECTED = "Rejected"
+
+# Employee roles
+ENGG = "Engineer"
+MGR = "Manager"
+HR = "HR"
 
 
 class MainView(TemplateView):
@@ -94,7 +99,7 @@ def updateRequest(request):
         status = APPROVED
     if action == 'reject':
         status = REJECTED
-        
+
     req.update(status=status)
     return redirect("/dashboard")
 
@@ -105,19 +110,17 @@ def dashboard(request):
     # response html for employee and manager
     emp_dashboard_template = "emp_home.html"
     mgr_dashboard_template = 'mgr_home.html'
+    hr_dashboard_template = "hr_home.html"
 
     username = request.user.username
     details = Employee.objects.filter(employeeID=username).values_list(
         "employeeName",
-        "mgrID",
-        "mgrName"
+        "role"
     )
     name = details[0][0]
-    manager_id = details[0][1]
+    role = details[0][1]
 
-    if manager_id == "NA":
-        # IF there is no managerID that means he/she is a manager.
-
+    if role in [MGR, HR]:
         if request.method == "GET":
             date = datetime.date.today()
         else:
@@ -125,11 +128,19 @@ def dashboard(request):
             date = datetime.datetime.strptime(date, '%Y-%m-%d')
 
         date_form = DateForm(initial={'date': date})
+        template = mgr_dashboard_template
+        if role == MGR:
+            pending_reqs = Request.objects.filter(
+                managerID=username, date=date).values_list(
+                'id', 'employeeID', 'username',
+                'date', 'zone', 'purpose', 'status')
+        else:
+            pending_reqs = Request.objects.filter(date=date).values_list(
+                'id', 'employeeID', 'username',
+                'date', 'zone', 'purpose', 'status')
+            template = hr_dashboard_template
 
-        pending_reqs = Request.objects.filter(
-            managerID=username, date=date).values_list('id', 'employeeID', 'username',
-                                            'date', 'zone', 'purpose', 'status')
-        return render(request, mgr_dashboard_template,
+        return render(request, template,
                       {'pendingApproval': pending_reqs,
                        'length_records': len(pending_reqs),
                        'date_form': date_form})
