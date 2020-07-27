@@ -12,19 +12,15 @@
         <br></br>
         <center><h2>Approvals Pending at Manager Level</h2></center>
         <br></br><br></br>
-        <form action="/dashboard" method="post">{% csrf_token %}
-            <div class="form-row" >
-                <div class="input-group date col-sm-4" id="datetimepicker1" data-target-input="nearest">
-<!--            <input type="text" class="form-control datetimepicker-input " data-target="#datetimepicker1"/>-->
-            {{ date_form.date }}
-            <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-            </div>
-            </div>
-                <button type="submit" id="submit" class="btn btn-primary float-right">Submit</button>
-            </div>
-
-        </form>
+        <div class="row">
+        <div class="col-sm-6">
+            {% include "calendar.html" %}
+        </div>
+        <div class="col-sm-6">
+            <h4>Total Employees: {{total_emp}}</h4>
+            <h4>Active Employees: {{active_emp}} ({{active_emp_share}}%)</h4>
+        </div>
+        </div>
 
         <br>
        <table class="table table-hover">
