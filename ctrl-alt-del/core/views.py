@@ -95,7 +95,7 @@ def updateRequest(request):
     if action == 'reject':
         status = REJECTED
         
-    req.update(status=status)
+    req.update(status=status)   
     return redirect("/dashboard")
 
 

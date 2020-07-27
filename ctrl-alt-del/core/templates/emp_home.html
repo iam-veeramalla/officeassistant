@@ -1,8 +1,6 @@
 {% extends "base.html" %}
-
+{%load static %}
 {% block content %}
-
-<h2><center>Welcome {{fullname}}</center></h2>
 
 <!--<form class="modal-content animate" action="/registration" method="post">{% csrf_token %}-->
 <!--                <div class="container" style="width:auto;">-->
@@ -11,17 +9,38 @@
 <!--                </div>-->
 <!--</form>-->
 
-
-<form class="modal-content animate" action="/registration">
-                <div class="container" style="width:auto;">
-                    <input type="submit" id="newreq" value="New Request" class="btn">
-                </div>
-</form>
-
-<form class="modal-content animate" action="/requests">
-                <div class="container" style="width:auto;">
-                    <input type="submit" id="getreqs" value="View Requests" class="btn">
-                </div>
-</form>
+<div id="content-container" class="container-fluid text-center">
+<div class="row content">
+    <div class="col-sm-2 sidenav">
+    </div>
+    <div class="lgn-container col-lg-8">
+        <br></br>
+        <h2><center>Welcome {{fullname}}</center></h2>
+        <br></br>
+        <img src="{% static 'images/f5-logo.png'%}" alt="f5-logo" width="180" height="180">
+        <br></br>
+        <table class="table table-hover">
+            <tr>
+                <td style="text-align:center">
+                    <form class="modal-content animate" action="/registration">
+                        <div class="container" style="width:115px">
+                            <input type="submit" id="newreq" value="New Request" class="btn">
+                        </div>
+                    </form>
+                </td>   
+                <td>
+                    <form class="modal-content animate" action="/requests">
+                        <div class="container" style="width=50%;">
+                            <input type="submit" id="getreqs" value="History" class="btn">
+                        </div>
+                    </form>  
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-sm-2 sidenav">
+    </div>
+</div>
+</div>
 
 {% endblock content %}
