@@ -8,9 +8,9 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from .forms import SignUpForm
-from django.shortcuts import render, redirect, HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate
 from django.core.mail import send_mail
 #from django.contrib.auth.forms import UserCreationForm
@@ -90,9 +90,10 @@ def createRequest(request):
     #     record = Request(employeeID=empID, username=username, managerID=managerID, managerName=managerName, date=date, zone=zone, purpose=purpose, status=status)
     #     record.save()
 
-    default_rec = {"employeeID":empID, "username":username, "managerID":managerID,
-                "managerName":managerName, "date":date, "zone":zone,
-                "purpose":purpose, "status":status}
+    default_rec = {"employeeID": empID, "username": username,
+                   "managerID": managerID, "managerName": managerName,
+                   "date": date, "zone": zone, "purpose": purpose,
+                   "status": status}
     record, created = Request.objects.update_or_create(date=date,
                                                        employeeID=empID,
                                                        defaults=default_rec)
@@ -243,10 +244,21 @@ def set_limit(request):
     limit = int(request.POST.get('limit'))
     return redirect("/dashboard")
 
-class RequetsView(ListView):
+class RequestsView(ListView):
     model = Request
     # paginate_by = 10
     template_name = "requests.html"
 
     def get_queryset(self):
         return Request.objects.filter(employeeID=self.request.user.username)
+
+
+class RequestView(DetailView):
+    model = Request
+    template_name = "requestdetail.html"
+
+    def get(self, request, *args, **kwargs):
+        record = get_object_or_404(Request, pk=kwargs['pk'])
+        context = {'record': record}
+        return render(request, 'requestdetail.html', context)
+

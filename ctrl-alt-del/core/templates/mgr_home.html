@@ -34,6 +34,7 @@
                         <td> {{ element }} </td> 
                     {% endfor %}
                     <td style="text-align:center">
+                      <a role="button" class="btn btn-primary" href="{% url 'request_detail' pk=record.0 %}"> View </a>
                       <button type="button" class="approve-button btn btn-success" data-record="{{record}}">Approve</button>
                       <button type="button" class="reject-button btn btn-danger" data-record="{{record}}">Reject</button>
                     </td>
