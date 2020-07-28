@@ -83,12 +83,19 @@ def createRequest(request):
     managerName = managerDetails[0][1]
     username = managerDetails[0][2]
 
-    try:
-        records = Request.objects.filter(date=date, employeeID=empID)
-        record = records[0]
-    except:
-        record = Request(employeeID=empID, username=username, managerID=managerID, managerName=managerName, date=date, zone=zone, purpose=purpose, status=status)
-        record.save()
+    # try:
+    #     records = Request.objects.filter(date=date, employeeID=empID)
+    #     record = records[0]
+    # except:
+    #     record = Request(employeeID=empID, username=username, managerID=managerID, managerName=managerName, date=date, zone=zone, purpose=purpose, status=status)
+    #     record.save()
+
+    default_rec = {"employeeID":empID, "username":username, "managerID":managerID,
+                "managerName":managerName, "date":date, "zone":zone,
+                "purpose":purpose, "status":status}
+    record, created = Request.objects.update_or_create(date=date,
+                                                       employeeID=empID,
+                                                       defaults=default_rec)
     
     return render(request, template_response, {'id': record.id, 'employeeID': empID, 'username': username, 'managerID': managerID, 'managerName': managerName, 'date': date, 'zone': zone, 'purpose': purpose, 'status': status})
 
