@@ -10,16 +10,25 @@
         <br></br>
         <center><h2>Approvals For HR Review</h2></center>
         <br></br><br></br>
+
         <div class="row">
+            <div class="col-sm-6"><h3> Running with {{limit}}% of Employees </h3></div>
         <div class="col-sm-6">
+            <form class="form-inline" action="/set_limit" method="post">{% csrf_token %}
+            <div class="form-row" >
+                <label for="limit" class="mr-sm-2"><strong> Update Limit (%): </strong></label>
+                <input id="limit" name="limit" placeholder="50%" class="form-control mr-sm-2" type="text" value="{{limit}}">
+                <div>
+                  <button type="submit" id="limit_submit" class="btn btn-primary float-right">Update</button>
+                </div>
+
+            </div>
+
+        </form>
+        </div></div>
+        <br>
             {% include "calendar.html" %}
-            <br>
-            <h4>WFH Employees: {{reject_emps}}</h4>
-            <h4>Approved Employees: {{approve_emps}}</h4>
-        </div>
-        <div class="col-sm-6" id="piechart">
-       </div>
-        </div>
+
         <br>
        <table class="table table-hover">
             <thead>

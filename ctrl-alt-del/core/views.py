@@ -3,17 +3,18 @@
 import datetime
 import json
 
-from django.http import HttpResponsePermanentRedirect
+from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from django.views.generic import ListView
 from .forms import SignUpForm
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.contrib.auth import login, authenticate
 from django.core.mail import send_mail
 #from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 
 from .forms import DateForm
 from .models import Employee
@@ -29,6 +30,7 @@ ENGG = "Engineer"
 MGR = "Manager"
 HR = "HR"
 
+limit = 50
 
 class MainView(TemplateView):
 
@@ -80,9 +82,13 @@ def createRequest(request):
     managerID = managerDetails[0][0]
     managerName = managerDetails[0][1]
     username = managerDetails[0][2]
-    
-    record = Request(employeeID=empID, username=username, managerID=managerID, managerName=managerName, date=date, zone=zone, purpose=purpose, status=status)
-    record.save()
+
+    try:
+        records = Request.objects.filter(date=date, employeeID=empID)
+        record = records[0]
+    except:
+        record = Request(employeeID=empID, username=username, managerID=managerID, managerName=managerName, date=date, zone=zone, purpose=purpose, status=status)
+        record.save()
     
     return render(request, template_response, {'id': record.id, 'employeeID': empID, 'username': username, 'managerID': managerID, 'managerName': managerName, 'date': date, 'zone': zone, 'purpose': purpose, 'status': status})
 
@@ -97,6 +103,45 @@ def updateRequest(request):
     action = body['action']
     status = PENDING
     if action == 'approve':
+        username = request.user.username
+        details = Employee.objects.filter(employeeID=username).values_list(
+            "employeeName",
+            "role"
+        )
+        role = details[0][1]
+
+        if role in [MGR, HR]:
+            if request.method == "GET":
+                date = datetime.date.today()
+            else:
+                try:
+                    date = request.POST.get('date')
+                    date = datetime.datetime.strptime(date, '%Y-%m-%d')
+                except:
+                    date = eval(body["data"])[3]
+                    date = datetime.datetime.strftime(date, '%Y-%m-%d')
+
+            if role == MGR:
+                emps = Employee.objects.filter(mgrID=username)
+                approved_reqs = Request.objects.filter(status=APPROVED,
+                                                       date=date,
+                                                       managerID=username
+                                                       ).values_list(
+                    'employeeID'
+                )
+            else:
+                emps = Employee.objects.filter()
+                approved_reqs = Request.objects.filter(status=APPROVED,
+                                                       date=date). \
+                    values_list('employeeID')
+
+
+            total_emp = len(emps)
+            approve_emps = len(set([k[0] for k in approved_reqs]))
+            global limit
+            if ((approve_emps+1)*100) > (total_emp*limit):
+                return HttpResponse({"failed": "yes"})
+
         status = APPROVED
     if action == 'reject':
         status = REJECTED
@@ -119,8 +164,9 @@ def updateRequest(request):
     except:
         pass
         
-    req.update(status=status)   
-    return redirect("/dashboard")
+    req.update(status=status)
+
+    return HttpResponse({"success": "yes"})
 
 
 @login_required()
@@ -177,9 +223,18 @@ def dashboard(request):
                        'length_records': len(pending_reqs),
                        'date_form': date_form,
                        'reject_emps': total_emp-approve_emps,
-                       'approve_emps': approve_emps})
+                       'approve_emps': approve_emps,
+                       'limit': limit})
     else:
         return render(request, emp_dashboard_template, {'fullname': name})
+
+
+@login_required()
+@csrf_exempt
+def set_limit(request):
+    global limit
+    limit = int(request.POST.get('limit'))
+    return redirect("/dashboard")
 
 class RequetsView(ListView):
     model = Request

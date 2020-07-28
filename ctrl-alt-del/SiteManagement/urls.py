@@ -32,6 +32,7 @@ urlpatterns = patterns('',
                        url(r'requests', RequetsView.as_view(), name="requests"),
                        url(r'create_request', 'core.views.createRequest', name='create_request'),
                        url(r'update_request', 'core.views.updateRequest', name='update_request'),
+                       url(r'set_limit', 'core.views.set_limit', name='set_limit'),
                        url(r'logout', auth_views.login, {'template_name': 'logout.html'}, name='logout'),
                        url('^', include('django.contrib.auth.urls')),
                        ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
