@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Office Assistant</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
-<style>img {width:100%;}</style>
+{% extends "base.html" %}
+{%load static %}
+{% block content %}
+
+
 <section class="testimonial py-5" id="testimonial">
     <div class="container">
         <div class="row ">
@@ -22,5 +16,5 @@
         </div>
     </div>
 </section>
-</head>
-</html>
+
+{% endblock content %}

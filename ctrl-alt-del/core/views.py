@@ -106,14 +106,18 @@ def updateRequest(request):
     #    "emaliID",
     #)[0][0]
     emailId = "subbuv226@gmail.com"
-     
-    send_mail(
-    'Subject here',
-    'Here is the message.',
-    'abhishek.veeramalla@gmail.com',
-    [emailId],
-    fail_silently = False,
-    )
+
+    try:
+        import thread
+        thread.start_new_thread(send_mail, (
+            'F5 Request Pass Update',
+            'Your Request is ' + status,
+            'abhishek.veeramalla@gmail.com',
+            [emailId],
+            # fail_silently = False,
+        ))
+    except:
+        pass
         
     req.update(status=status)   
     return redirect("/dashboard")
@@ -145,20 +149,35 @@ def dashboard(request):
         date_form = DateForm(initial={'date': date})
         template = mgr_dashboard_template
         if role == MGR:
+            emps = Employee.objects.filter(mgrID=username)
+            approved_reqs = Request.objects.filter(status=APPROVED,
+                                                   date=date, managerID=username
+                                                   ).values_list(
+                                                    'employeeID'
+                                                    )
             pending_reqs = Request.objects.filter(
                 managerID=username, date=date).values_list(
                 'id', 'employeeID', 'username',
                 'date', 'zone', 'purpose', 'status')
         else:
+            emps = Employee.objects.filter()
+            approved_reqs = Request.objects.filter(status=APPROVED, date=date).\
+                values_list('employeeID')
+
             pending_reqs = Request.objects.filter(date=date).values_list(
                 'id', 'employeeID', 'username',
                 'date', 'zone', 'purpose', 'status')
             template = hr_dashboard_template
 
+        total_emp = len(emps)
+        approve_emps = len(set([k[0] for k in approved_reqs]))
+
         return render(request, template,
                       {'pendingApproval': pending_reqs,
                        'length_records': len(pending_reqs),
-                       'date_form': date_form})
+                       'date_form': date_form,
+                       'reject_emps': total_emp-approve_emps,
+                       'approve_emps': approve_emps})
     else:
         return render(request, emp_dashboard_template, {'fullname': name})
 
