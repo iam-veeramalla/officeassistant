@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
 from core.views import MainView
-from core.views import RequetsView
+from core.views import RequestsView, RequestView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -29,9 +29,11 @@ urlpatterns = patterns('',
                        url(r'login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
                        url(r'^registration$', 'core.views.registration', name='registration'),
                        url(r'dashboard$', 'core.views.dashboard', name='dashboard'),
-                       url(r'requests', RequetsView.as_view(), name="requests"),
+                       url(r'requests$', RequestsView.as_view(), name="requests"),
+                       url('request/(?P<pk>[0-9]+)/$', RequestView.as_view(), name='request_detail'),
                        url(r'create_request', 'core.views.createRequest', name='create_request'),
                        url(r'update_request', 'core.views.updateRequest', name='update_request'),
+                       url(r'set_limit', 'core.views.set_limit', name='set_limit'),
                        url(r'logout', auth_views.login, {'template_name': 'logout.html'}, name='logout'),
                        url('^', include('django.contrib.auth.urls')),
                        ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

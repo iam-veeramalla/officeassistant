@@ -10,18 +10,9 @@
     </div>
     <div class="col-sm-8 text-left"> 
         <br></br>
-        <center><h2>Approvals Pending at Manager Level</h2></center>
+        <center><h2>Approvals Pending at Manager Level (Limit: {{ limit }}%)</h2></center>
         <br></br><br></br>
-        <div class="row">
-        <div class="col-sm-6">
             {% include "calendar.html" %}
-            <br>
-            <h4>WFH Employees: {{reject_emps}}</h4>
-            <h4>Approved Employees: {{approve_emps}}</h4>
-        </div>
-        <div class="col-sm-6" id="piechart">
-       </div>
-        </div>
 
         <br>
        <table class="table table-hover">
@@ -43,6 +34,7 @@
                         <td> {{ element }} </td> 
                     {% endfor %}
                     <td style="text-align:center">
+                      <a role="button" class="btn btn-primary" href="{% url 'request_detail' pk=record.0 %}"> View </a>
                       <button type="button" class="approve-button btn btn-success" data-record="{{record}}">Approve</button>
                       <button type="button" class="reject-button btn btn-danger" data-record="{{record}}">Reject</button>
                     </td>

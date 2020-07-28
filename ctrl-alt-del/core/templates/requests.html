@@ -15,6 +15,7 @@
        <table class="table table-hover">
             <thead>
                 <tr>
+                    <th> View </th>
                     <th>EmployeeID</th>
                     <th>Username</th>
                     <th>Date</th>
@@ -26,6 +27,7 @@
             <tbody>
             {% for record in object_list %}
                 <tr>
+                    <td> <a role="button" class="btn btn-primary" href="{% url 'request_detail' pk=record.id %}"> View </a></td>
                     <td> {{ record.employeeID }} </td>
                     <td> {{ record.username }} </td>
                     <td> {{ record.date }} </td>

@@ -1,4 +1,7 @@
-        <form action="/dashboard" method="post">{% csrf_token %}
+
+        <div class="row">
+        <div class="col-sm-6">
+            <form action="/dashboard" method="post">{% csrf_token %}
             <div class="form-row" >
                 <div class="input-group date col-sm-8" id="datetimepicker1" data-target-input="nearest">
 <!--            <input type="text" class="form-control datetimepicker-input " data-target="#datetimepicker1"/>-->
@@ -11,3 +14,32 @@
             </div>
 
         </form>
+            <br>
+            <div class="container">
+  <h3> Employee Statistics</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr class="table-danger">
+        <td>WFH Employees:</td>
+        <td>{{reject_emps}}</td>
+      </tr>
+
+      </tr>
+      <tr class="table-primary">
+        <td>Approved Employees:</td>
+        <td>{{approve_emps}}</td>
+      </tr>
+    </tbody>
+  </table>
+            </div>
+        </div>
+        <div class="col-sm-6" id="piechart">
+       </div>
+        </div>
