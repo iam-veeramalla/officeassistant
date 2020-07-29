@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{%load static %}
+{% block content %}
+
+<div class="container-fluid text-center">    
+  <div class="row content">
+    <div class="col-sm-2 sidenav">
+        <br></br>
+        <img src="{% static 'images/f5-logo.png'%}" alt="f5-logo" width="225" height="225">
+    </div>
+    <div class="col-sm-8 text-left"> 
+        <br></br>
+        <center><h2>Quota Request Acknowledge Form</h2></center>
+        <br></br><br></br>
+        <center>
+        <table style="width:50%; border-collapse: collapse;" class="table table-hover center table-bordered">
+        <tr>
+            <td>Date</td>
+            <td>{{date}}</td>
+        </tr>
+        <tr>
+            <td>Manager ID</td>
+            <td>{{reqMgrID}}</td>
+        </tr>
+        <tr>
+            <td>Quota Requested</td>
+            <td>{{quotaAmount}}</td>
+        </tr>
+        <tr>
+            <td>Status</td>
+            <td>{{PENDING}}</td>
+        </tr>
+        </table>
+        </center>
+    </div>
+    
+    <div class="col-sm-2 sidenav">
+    </div>
+
+  </div>
+</div>
+
+{% endblock content %}

@@ -20,3 +20,18 @@ class Request(models.Model):
     zone = models.CharField(max_length=255)
     purpose = models.TextField()
     status = models.CharField(max_length=255)
+    
+
+class QuotaRequest(models.Model):
+    id = models.AutoField(primary_key=True)  # pkey
+    reqMgrID = models.CharField(max_length=10) # fkey: Employee with role mgr
+    donorMgrID = models.CharField(max_length=10) # fkey: Employee with role mgr
+    quotaAmount = models.IntegerField()
+    date = models.DateField()
+    status = models.CharField(max_length=255)
+    
+    
+class QuotaStore(models.Model):
+    mgrID = models.CharField(max_length=10)
+    date = models.DateField()
+    quotaAmount = models.IntegerField()
