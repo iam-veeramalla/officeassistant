@@ -1,94 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <title>Office Assistant</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   {% load static %}
-<!--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+  <!--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!--  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+  <!--  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
 
-    <!-- Bootstrap CSS -->
+  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
   <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/sticky-footer-navbar/">
-<!--  <link rel="stylesheet" type="text/css" href="{'% static 'cal/css/styles.css' %}">-->
-<!--  <link rel="stylesheet" href="{'% static 'css/styles.css' %}">-->
+  <!--  <link rel="stylesheet" type="text/css" href="{'% static 'cal/css/styles.css' %}">-->
+  <!--  <link rel="stylesheet" href="{'% static 'css/styles.css' %}">-->
 
-    <!-- Optional JavaScript -->
+  <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<!--  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"-->
-<!--    crossorigin="anonymous"></script>-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+  <!--  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"-->
+  <!--    crossorigin="anonymous"></script>-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
     crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
 
-      <!-- Font Awesome -->
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <!-- Font Awesome -->
+  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
-    <!-- Moment.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js" integrity="sha256-VBLiveTKyUZMEzJd6z2mhfxIqz3ZATCuVMawPZGzIfA=" crossorigin="anonymous"></script>
+  <!-- Moment.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js"
+    integrity="sha256-VBLiveTKyUZMEzJd6z2mhfxIqz3ZATCuVMawPZGzIfA=" crossorigin="anonymous"></script>
 
-    <!-- Tempus Dominus Bootstrap 4 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css" integrity="sha256-XPTBwC3SBoWHSmKasAk01c08M6sIA5gF5+sRxqak2Qs=" crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js" integrity="sha256-z0oKYg6xiLq3yJGsp/LsY9XykbweQlHl42jHv2XTBz4=" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <!-- Tempus Dominus Bootstrap 4 -->
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css"
+    integrity="sha256-XPTBwC3SBoWHSmKasAk01c08M6sIA5gF5+sRxqak2Qs=" crossorigin="anonymous" />
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js"
+    integrity="sha256-z0oKYg6xiLq3yJGsp/LsY9XykbweQlHl42jHv2XTBz4=" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <style>
-  html {
-    height: 100%;
-  }
-  html body {
-    height: 100%;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-  html body .container-fluid.body-content {
-    width: 100%;
-    overflow-y: auto;
-    /* margin-top: -80px;
-    margin: -80px auto 80px */
-  }
-  .footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    /* Set the fixed height of the footer here */
-    height: 60px;
-    line-height: 60px; /* Vertically center the text there */
-    background-color: #555555;
-    flex-shrink: 0;
-  }
-
-  /* Custom page CSS
-  -------------------------------------------------- */
-  /* Not required for template or sticky footer method. */
-
-  body > .container {
-    padding: 60px 15px 0;
-  }
-
-  .footer > .container {
-    padding-right: 15px;
-    padding-left: 15px;
-  }
-
-    #customers {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 60%;
+    html {
+      height: 100%;
     }
 
-    #customers td, #customers th {
+    html body {
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    html body .container-fluid.body-content {
+      width: 100%;
+      overflow-y: auto;
+      /* margin-top: -80px;
+    margin: -80px auto 80px */
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      /* Set the fixed height of the footer here */
+      height: 60px;
+      line-height: 60px;
+      /* Vertically center the text there */
+      background-color: #555555;
+      flex-shrink: 0;
+    }
+
+    /* Custom page CSS
+  -------------------------------------------------- */
+    /* Not required for template or sticky footer method. */
+
+    body>.container {
+      padding: 60px 15px 0;
+    }
+
+    .footer>.container {
+      padding-right: 15px;
+      padding-left: 15px;
+    }
+
+    #customers {
+      font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      width: 60%;
+    }
+
+    #customers td,
+    #customers th {
       border: 1px solid #ddd;
       padding: 8px;
     }
 
-    #customers tr:nth-child(even){background-color: #f2f2f2;}
+    #customers tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
 
-    #customers tr:hover {background-color: #ddd;}
+    #customers tr:hover {
+      background-color: #ddd;
+    }
 
     #customers th {
       padding-top: 12px;
@@ -97,6 +115,7 @@
       background-color: #4CAF50;
       color: white;
     }
+
     .bd-placeholder-img {
       font-size: 1.125rem;
       text-anchor: middle;
@@ -111,119 +130,177 @@
         font-size: 3.5rem;
       }
     }
+
     .form-control {
-    width:100%;
+      width: 100%;
     }
-  code {
-    font-size: 80%;
-  }
+
+    code {
+      font-size: 80%;
+    }
+
+    .scrollbar {
+      margin-left: 30px;
+      float: left;
+      height: 250px;
+      background: #fff;
+      overflow-y: scroll;
+      margin-bottom: 25px;
+    }
+
+    .force-overflow {
+      min-height: 450px;
+    }
+
+    .scrollbar-default::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+      background-color: #F5F5F5;
+      border-radius: 10px;
+    }
+
+    .scrollbar-default::-webkit-scrollbar {
+      width: 12px;
+      background-color: #F5F5F5;
+    }
+
+    .scrollbar-default::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+      background-color: #2BBBAD;
+    }
+
+    .scrollbar-default {
+      scrollbar-color: #2BBBAD #F5F5F5;
+    }
   </style>
 
 </head>
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-info text-white">
-  <a class="navbar-brand" href="https://www.f5.com/">F5</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-info text-white">
+    <a class="navbar-brand" href="https://www.f5.com/">F5</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/dashboard">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">About</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Contact</a>
-      </li>
-    </ul>
-    <ul class="navbar-nav text-right">
-      <li class="nav-item">
-      <a class="nav-link" href="/logout">Logout</a>
-      </li>
-    </ul>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/dashboard">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contact</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav text-right">
+        {% if fullname %}
+        <li class="nav-item">
+          <a class="nav-link" href="/dashboard"> <strong>{{ fullname }}</strong></a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container-fluid body-content">
+
+    {% block content %}
+    {% endblock content %}
+
   </div>
-</nav>
+  <br>
+  <br>
 
-<div class="container-fluid body-content">
-  {% block content %}
-  {% endblock content %}
-</div>
-<br>
-<br>
+  <script>
+    // Get the modal
+    var modal = document.getElementById('id01');
 
-<script>
-// Get the modal
-var modal = document.getElementById('id01');
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+      if (event.target == modal) {
         modal.style.display = "none";
+      }
     }
-}
-$(document).ready(function(){
-  console.log("calling...")
-  $(".approve-button").click(function(){
-    record = $(this).data("record")
-    data = {data:record,action:"approve"}
-  $.post("/update_request", JSON.stringify(data), function(result){
-      console.log(result)
-        if(new String("failed").valueOf() == new String(result).valueOf()) {
+    $(document).ready(function () {
+      console.log("calling...")
+      $(".approve-button").click(function () {
+        record = $(this).data("record")
+        data = { data: record, action: "approve" }
+        $.post("/update_request", JSON.stringify(data), function (result) {
+          console.log(result)
+          if (new String("failed").valueOf() == new String(result).valueOf()) {
             alert("Unable to Approve the Request as Limit for the Day reached");
-        }
+          }
 
-        document.querySelector('#submit').click();
+          document.querySelector('#submit').click();
 
+        });
+      });
+      $(".reject-button").click(function () {
+        record = $(this).data("record")
+        data = { data: record, action: "reject" }
+        $.post("/update_request", JSON.stringify(data), function (result) {
+          console.log(result)
+          //      window.location.href = '/dashboard';
+          document.querySelector('#submit').click();
+        });
+      });
+      $(".donate-button").click(function () {
+        record = $(this).data("record")
+        data = { data: record }
+        $.post("/donatequota", JSON.stringify(data), function (result) {
+          console.log(result)
+          if (new String("failed").valueOf() == new String(result).valueOf()) {
+            alert("Unable to Donate due to unavailability of enough quota");
+          } else {
+            alert("Quota Donated. Thanks.");
+          }
+          window.location.href = '/quotastore';
+          // document.querySelector('#submit').click();
+        });
+      });
     });
-  });
-  $(".reject-button").click(function(){
-    record = $(this).data("record")
-    data = {data:record,action:"reject"}
-  $.post("/update_request", JSON.stringify(data), function(result){
-      console.log(result)
-//      window.location.href = '/dashboard';
-      document.querySelector('#submit').click();
+
+    $(function () {
+      $("#datetimepicker1").datetimepicker({
+        format: 'YYYY-MM-DD',
+        daysOfWeekDisabled: [0, 6],
+        useCurrent: false
+      });
     });
-  });
-});
 
-  $(function () {
-    $("#datetimepicker1").datetimepicker({
-      format: 'YYYY-MM-DD',
-      daysOfWeekDisabled: [0, 6],
-      useCurrent: false
-    });
-  });
+    // Load google charts
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
 
-// Load google charts
-google.charts.load('current', {'packages':['corechart']});
-google.charts.setOnLoadCallback(drawChart);
+    // Draw the chart and set the chart values
 
-// Draw the chart and set the chart values
+    function drawChart() {
+      var approved = "{{ approve_emps }}";
+      var rejected = "{{ reject_emps }}";
+      var data = google.visualization.arrayToDataTable([
+        ['Employees', 'Active share'],
+        ['Approved', eval(approved)],
+        ['Rejected/WFH', eval(rejected)]
+      ]);
 
-function drawChart() {
-  var approved = "{{ approve_emps }}";
-  var rejected = "{{ reject_emps }}";
-  var data = google.visualization.arrayToDataTable([
-    ['Employees', 'Active share'],
-    ['Approved', eval(approved)],
-    ['Rejected/WFH', eval(rejected)]
-]);
+      // Optional; add a title and set the width and height of the chart
+      var options = { 'title': '', 'width': 550, 'height': 300 };
 
-  // Optional; add a title and set the width and height of the chart
-  var options = {'title':'', 'width':550, 'height':300};
+      // Display the chart inside the <div> element with id="piechart"
+      var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+      chart.draw(data, options);
+    }
 
-  // Display the chart inside the <div> element with id="piechart"
-  var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-  chart.draw(data, options);
-}
-
-</script>
+  </script>
 
 </body>
 <!-- Footer-->
@@ -235,4 +312,5 @@ function drawChart() {
   </div>
   <!-- Copyright -->
 </footer>
+
 </html>

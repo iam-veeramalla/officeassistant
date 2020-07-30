@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container-fluid text-center">
+  <div class="row content">
+    <div class="col-sm-1 sidenav">
+      <br></br>
+      <img src="{% static 'images/f5-logo.png'%}" alt="f5-logo" width="150" height="150">
+    </div>
+    <div class="col-sm-8 text-left">
+      <br></br>
+      <center>
+        <h2>My Quota</h2>
+      </center>
+      <br></br><br></br>
+      <div class="row">
+        <div class="col-sm-6">
+          <h3 style="margin-bottom: 15px; text-align: center;"> Quota Limits </h3>
+          <table class="table table-hover">
+            <thead>
+              <tr class="table-danger ">
+                <th style="text-align: center;">Day</th>
+                <th style="text-align: center;">Limits</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for record in quota_list %}
+              <tr style="background-color: {% cycle "lightcyan" "lightyellow" as rowcolors %}">
+                <td style="text-align: center;"> {{ record.date }} </td>
+                <td style="text-align: center;"> {{ record.quotaAmount }} </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <br>
+        </div>
+
+        <div class="col-sm-6">
+          <h3 style="margin-bottom: 15px;"> Request Quota</h3>
+          <form class="form" action="/quotarequest" method="post">{% csrf_token %}
+            <div class="form-group row">
+              <label for=" datetimepicker1" class="col-sm-2 col-form-label"> <strong>Date: </strong> </label>
+              <div class="input-group date col-sm-10" id="datetimepicker1" data-target-input="nearest">
+                <!--            <input type="text" class="form-control datetimepicker-input " data-target="#datetimepicker1"/>-->
+                {{ date_form.date }}
+                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                  <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="quota" class="col-sm-2 col-form-label"> <strong> Quota: </strong></label>
+              <div class="col-sm-7">
+                <input id="quota" name="quotaAmount" class="form-control" type="text" placeholder="Number of Employees">
+              </div>
+              <div class="col-sm-3">
+                <button type="submit" id="submit" class="btn btn-primary float-right form-control">Request</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <h3 style="margin-bottom: 15px; text-align: center;"> My Quota Requests </h3>
+          <table class="table table-hover">
+            <thead>
+              <tr class="table-primary">
+                <th style="text-align:center">Date</th>
+                <th style="text-align:center">Donate Manger</th>
+                <th style="text-align:center">Quota</th>
+                <th style="text-align:center">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for qreq in quota_reqs %}
+              <tr style="background-color: {% cycle "lightcyan" "lightyellow" as rowcolors %}"">
+                  <td style=" text-align:center"> {{ qreq.date }} </td>
+                <td style="text-align:center"> {{ qreq.donorMgrID }} </td>
+                <td style="text-align:center"> {{ qreq.quotaAmount }} </td>
+                <td style="text-align:center"> {{ qreq.status }} </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 text-left" style="margin-top: 15px;">
+      <div>
+        {% include "quota_req_notif.html" %}
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+{% endblock content %}

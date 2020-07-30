@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{%load static %}
+{% load static %}
 {% block content %}
 
 <div class="container-fluid text-center">
@@ -12,8 +12,9 @@
             <br></br>
             <center>
                 <h2>Approvals Pending at Manager Level (Limit: {{ limit }}%)</h2>
+                <h2><a href="/quotastore" type="button" class="btn btn-success"> My Quota </a></h2>
             </center>
-            <br></br><br></br>
+            <br></br>
             {% include "calendar.html" %}
             <br>
             <table class="table table-hover">
@@ -32,7 +33,7 @@
                     {% for record in pendingApproval %}
                     <tr>
                         {% for element in record|slice:"1:" %}
-                        <td> {{ element }} </td>
+                        <td style="text-align:center"> {{ element }} </td>
                         {% endfor %}
                         <td style="text-align:center">
                             <a role="button" class="btn btn-primary" href="{% url 'request_detail' pk=record.0 %}"> View
@@ -48,27 +49,9 @@
             </table>
         </div>
         <div class="col-sm-3 text-left" style="margin-top: 15px;">
-                <div class="alert alert-info alert-dismissible fade show" role="alert">
-                    <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-                    <a class="nav-link" href="/home">View</a>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="alert alert-info alert-dismissible fade show" role="alert">
-                    <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-                    <a class="nav-link" href="/login">View</a>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="alert alert-info alert-dismissible fade show" role="alert">
-                    <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-                    <a class="nav-link" href="/login">View</a>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+            <div>
+                {% include "quota_req_notif.html" %}
+          </div>
         </div>
         <!-- <div class="col-sm-2 sidenav">
     </div> -->
