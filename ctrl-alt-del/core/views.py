@@ -141,18 +141,22 @@ def updateRequest(request):
                                                        ).values_list(
                     'employeeID'
                 )
+                quota = QuotaStore.objects.filter(mgrID=username, date=date).\
+                    values_list('quotaAmount')[0][0]
+                total_emp = len(emps)
+                approve_emps = len(set([k[0] for k in approved_reqs]))
+
+                if approve_emps + 1 > quota:
+                    return HttpResponse({"failed": "yes"})
             else:
                 emps = Employee.objects.filter()
                 approved_reqs = Request.objects.filter(status=APPROVED,
                                                        date=date). \
                     values_list('employeeID')
-
-
-            total_emp = len(emps)
-            approve_emps = len(set([k[0] for k in approved_reqs]))
-            global limit
-            if ((approve_emps+1)*100) > (total_emp*limit):
-                return HttpResponse({"failed": "yes"})
+                total_emp = len(emps)
+                approve_emps = len(set([k[0] for k in approved_reqs]))
+                if ((approve_emps + 1) * 100) > (total_emp * limit):
+                    return HttpResponse({"failed": "yes"})
 
         status = APPROVED
     if action == 'reject':
@@ -208,26 +212,25 @@ def dashboard(request):
         template = mgr_dashboard_template
         if role == MGR:
             mgrID = request.user.username
-            date = datetime.date.today()
-            dates = [date]
-            delta = datetime.timedelta(days=1)
-            for i in range(5):
-                # Use update_or_create
-                date += delta
-                dates.append(date)
-
-            others_reqs = QuotaRequest.objects.filter(~Q(reqMgrID=mgrID),
-                                                      date__in=dates)
+            pending_reqs = Request.objects.filter(
+                managerID=mgrID, date=date).values_list(
+                'id', 'employeeID', 'username',
+                'date', 'zone', 'purpose', 'status')
             emps = Employee.objects.filter(mgrID=username)
             approved_reqs = Request.objects.filter(status=APPROVED,
                                                    date=date, managerID=username
                                                    ).values_list(
                                                     'employeeID'
                                                     )
-            pending_reqs = Request.objects.filter(
-                managerID=username, date=date).values_list(
-                'id', 'employeeID', 'username',
-                'date', 'zone', 'purpose', 'status')
+            date = datetime.date.today()
+            dates = [date]
+            delta = datetime.timedelta(days=1)
+            for i in range(5):
+                date += delta
+                dates.append(date)
+
+            others_reqs = QuotaRequest.objects.filter(~Q(reqMgrID=mgrID),
+                                                      date__in=dates)
         else:        
             emps = Employee.objects.filter()
             approved_reqs = Request.objects.filter(status=APPROVED, date=date).\
@@ -249,7 +252,8 @@ def dashboard(request):
                        'reject_emps': total_emp-approve_emps,
                        'approve_emps': approve_emps,
                        'others_reqs': others_reqs,
-                       'limit': limit})
+                       'limit': limit,
+                       'fullname': name})
     else:
         return render(request, emp_dashboard_template, {'fullname': name})
 
@@ -266,10 +270,14 @@ def quotarequest(request):
     status = PENDING
     
     # Save quotarequest with requested manager details and date of request
+    defaults = {
+        'quotaAmount': quotaAmount,
+        'status': status
+    }
+
     QuotaRequest.objects.update_or_create(reqMgrID=reqMgrID,
-                                          quotaAmount=quotaAmount,
                                           date=date,
-                                          status=status
+                                          defaults=defaults,
                                           )
     
     return render(request, quota_request_template, {'reqMgrID': reqMgrID,
@@ -307,11 +315,11 @@ def donatequota(request):
     # Substract donated quota from the donorMgr quota
     totalQuota = QuotaStore.objects.filter(mgrID=donorMgrID, date=date).values_list(
         "quotaAmount"
-    )
+    )[0][0]
     approvedRequests = Request.objects.filter(managerID=donorMgrID, date=date, status=APPROVED).values_list(
         "status"
     )
-    newDonarQuota = len(totalQuota) - len(approvedRequests) - reqQuotaAmount
+    newDonarQuota = totalQuota - len(approvedRequests) - reqQuotaAmount
     if newDonarQuota >= 0:
         # Reduce donor quota
         QuotaStore.objects.filter(mgrID=donorMgrID, date=date).update(quotaAmount=newDonarQuota)
@@ -319,9 +327,9 @@ def donatequota(request):
         # Add Quota to reqMgr quota
         requestorQuota = QuotaStore.objects.filter(mgrID=reqMgrID, date=date).values_list(
             "quotaAmount"
-        )  
+        )[0][0]
 
-        newRequestorQuota = len(requestorQuota) + reqQuotaAmount
+        newRequestorQuota = requestorQuota + reqQuotaAmount
         QuotaStore.objects.filter(mgrID=reqMgrID, date=date).update(quotaAmount=newRequestorQuota)
             
         QuotaRequest.objects.filter(reqMgrID=reqMgrID, date=date).\
@@ -335,7 +343,7 @@ def donatequota(request):
                        'date': date}
                       )
     else:
-        return HttpResponse({"You donot have enough quota to approve this request"})
+        return HttpResponse({"failed": "yes"})
     
     
 @login_required()
@@ -347,7 +355,6 @@ def quotastore(request):
     dates = [date]
     delta = datetime.timedelta(days=1)
     for i in range(5):
-        # Use update_or_create
         date += delta
         dates.append(date)
 
@@ -380,16 +387,21 @@ def populate_quota_store():
         # based on the percentage calculate it
         empOfMgr = Employee.objects.filter(mgrID=managerID).values_list('employeeID')
         empCount = len(empOfMgr)
-        quotaAmount = float(empCount*limit)/100
+        quotaAmount = (empCount*limit)/100
         # Populate QuotaStore for next 5 days
         date = datetime.date.today()
         delta = datetime.timedelta(days=1)
         for i in range(5):
-            # Use update_or_create
+            defaults = {'quotaAmount': quotaAmount}
             QuotaStore.objects.update_or_create(mgrID=managerID, date=date,
-                                                             quotaAmount=quotaAmount
-                                                            )
+                                                defaults=defaults
+                                                )
             date += delta
+
+
+def reset_quota_and_requests():
+    QuotaRequest.objects.filter().update(donorMgrID="", status=PENDING)
+    Request.objects.filter().update(status=PENDING)
 
 
 class RequestsView(ListView):

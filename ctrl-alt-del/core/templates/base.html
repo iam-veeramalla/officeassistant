@@ -258,6 +258,11 @@
         data = { data: record }
         $.post("/donatequota", JSON.stringify(data), function (result) {
           console.log(result)
+          if (new String("failed").valueOf() == new String(result).valueOf()) {
+            alert("Unable to Donate due to unavailability of enough quota");
+          } else {
+            alert("Quota Donated. Thanks.");
+          }
           window.location.href = '/quotastore';
           // document.querySelector('#submit').click();
         });

@@ -19,7 +19,7 @@ from django.contrib.auth import views as auth_views
 
 from core.views import MainView
 from core.views import RequestsView, RequestView, QuotaRequestView
-from core.views import populate_quota_store
+from core.views import populate_quota_store, reset_quota_and_requests
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -44,3 +44,4 @@ urlpatterns = patterns('',
                        ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 populate_quota_store()
+reset_quota_and_requests()
