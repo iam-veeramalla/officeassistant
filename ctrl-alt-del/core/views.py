@@ -224,9 +224,8 @@ def dashboard(request):
                                                     )
             date = datetime.date.today()
             dates = [date]
-            delta = datetime.timedelta(days=1)
             for i in range(5):
-                date += delta
+                date = get_next_working_day(date)
                 dates.append(date)
 
             others_reqs = QuotaRequest.objects.filter(~Q(reqMgrID=mgrID),
@@ -353,9 +352,8 @@ def quotastore(request):
     mgrID = request.user.username
     date = datetime.date.today()
     dates = [date]
-    delta = datetime.timedelta(days=1)
     for i in range(5):
-        date += delta
+        date = get_next_working_day(date)
         dates.append(date)
 
     quota_list = QuotaStore.objects.filter(mgrID=mgrID, date__in=dates)
@@ -390,13 +388,12 @@ def populate_quota_store():
         quotaAmount = (empCount*limit)/100
         # Populate QuotaStore for next 5 days
         date = datetime.date.today()
-        delta = datetime.timedelta(days=1)
         for i in range(5):
             defaults = {'quotaAmount': quotaAmount}
             QuotaStore.objects.update_or_create(mgrID=managerID, date=date,
                                                 defaults=defaults
                                                 )
-            date += delta
+            date = get_next_working_day(date)
 
 
 def reset_quota_and_requests():
@@ -431,3 +428,11 @@ class QuotaRequestView(DetailView):
         record = get_object_or_404(QuotaRequest, pk=kwargs['pk'])
         context = {'record': record}
         return render(request, 'quotarequestdetail.html', context)
+
+
+def get_next_working_day(date):
+    for i in range(1,5):
+        delta = datetime.timedelta(days=i)
+        next_day = date + delta
+        if next_day.weekday() in range(5):
+            return next_day
