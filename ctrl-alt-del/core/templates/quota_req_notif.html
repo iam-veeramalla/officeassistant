@@ -1,0 +1,10 @@
+        {% for req in others_reqs %}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+          <strong>Quota Request</strong> Need quota of {{ req.quotaAmount}} on {{ req.date }}
+          <a class="nav-link" href="{% url 'quota_request_detail' pk=req.id %}"> View
+          </a>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endfor %}

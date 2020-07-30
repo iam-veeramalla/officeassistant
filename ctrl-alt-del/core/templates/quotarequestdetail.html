@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{%load static %}
+{% block content %}
+
+<div class="container-fluid text-center">
+    <div class="row content">
+        <div class="col-sm-2 sidenav">
+            <br></br>
+            <img src="{% static 'images/f5-logo.png'%}" alt="f5-logo" width="225" height="225">
+        </div>
+        <div class="col-sm-8 text-left">
+            <br></br>
+            <center>
+                <h2>Quota Request</h2>
+            </center>
+            <br></br><br></br>
+            <center>
+                <table style="width:50%; border-collapse: collapse;" class="table table-hover center table-bordered">
+                    <tr>
+                        <td>Date</td>
+                        <td>{{ record.date }}</td>
+                    </tr>
+                    <tr>
+                        <td>Requested Manager ID</td>
+                        <td>{{ record.reqMgrID }}</td>
+                    </tr>
+                    <tr>
+                        <td>Quota Requested</td>
+                        <td>{{ record.quotaAmount }}</td>
+                    </tr>
+                    <tr>
+                        <td>Status</td>
+                        <td>{{ record.status }}</td>
+                    </tr>
+
+                </table>
+                <div>
+                    <button type="button" class="donate-button btn btn-success"
+                        data-record="['{{record.id}}', '{{record.reqMgrID}}', '{{record.date}}', '{{record.quotaAmount}}', '{{record.status}}']">
+                        Donate
+                    </button>
+                </div>
+            </center>
+        </div>
+
+        <div class="col-sm-2 sidenav">
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}

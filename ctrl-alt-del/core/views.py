@@ -16,10 +16,13 @@ from django.contrib.auth import login, authenticate
 from django.core.mail import send_mail
 #from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
+from django.db.models import Q
 
 from .forms import DateForm
 from .models import Employee
 from .models import Request
+from .models import QuotaStore
+from .models import QuotaRequest
 
 # Request status
 PENDING = "Pending Approval"
@@ -204,6 +207,17 @@ def dashboard(request):
         date_form = DateForm(initial={'date': date})
         template = mgr_dashboard_template
         if role == MGR:
+            mgrID = request.user.username
+            date = datetime.date.today()
+            dates = [date]
+            delta = datetime.timedelta(days=1)
+            for i in range(5):
+                # Use update_or_create
+                date += delta
+                dates.append(date)
+
+            others_reqs = QuotaRequest.objects.filter(~Q(reqMgrID=mgrID),
+                                                      date__in=dates)
             emps = Employee.objects.filter(mgrID=username)
             approved_reqs = Request.objects.filter(status=APPROVED,
                                                    date=date, managerID=username
@@ -223,6 +237,7 @@ def dashboard(request):
                 'id', 'employeeID', 'username',
                 'date', 'zone', 'purpose', 'status')
             template = hr_dashboard_template
+            others_reqs = []
 
         total_emp = len(emps)
         approve_emps = len(set([k[0] for k in approved_reqs]))
@@ -233,10 +248,12 @@ def dashboard(request):
                        'date_form': date_form,
                        'reject_emps': total_emp-approve_emps,
                        'approve_emps': approve_emps,
+                       'others_reqs': others_reqs,
                        'limit': limit})
     else:
         return render(request, emp_dashboard_template, {'fullname': name})
-    
+
+
 @login_required()
 @csrf_exempt
 def quotarequest(request):
@@ -249,66 +266,74 @@ def quotarequest(request):
     status = PENDING
     
     # Save quotarequest with requested manager details and date of request
-    quotastore = QuotaRequest.objects.update_or_create(reqMgrID=reqMgrID, 
-                                                      quotaAmount=quotaAmount, 
-                                                      date=date, 
-                                                      status=status
-                                                      )
+    QuotaRequest.objects.update_or_create(reqMgrID=reqMgrID,
+                                          quotaAmount=quotaAmount,
+                                          date=date,
+                                          status=status
+                                          )
     
-    return render(request, quota_request_template, 
-                  {'reqMgrID': reqMgrID},
-                  {'date': date},
-                  {'quotaAmount': quotaAmount},
-                  {'status': PENDING},
-                )    
+    return render(request, quota_request_template, {'reqMgrID': reqMgrID,
+                                                    'date': date,
+                                                    'quotaAmount': quotaAmount,
+                                                    'status': PENDING})
+
 
 @login_required()
 @csrf_exempt
 def donatequota(request):
-    
+    def _get_parsed_date(date_string):
+        try:
+            return datetime.datetime.strptime(date_string, "%B %d, %Y")
+        except ValueError:
+            if "." in date_string:
+                return datetime.datetime.strptime(date_string, "%b. %d, %Y")
+            else:
+                return datetime.datetime.strptime(date_string, "%b %d, %Y")
+
     donated_manager_template = "donatedQuota.html"
     # Donate quota to managers who have requested for resources
     donorMgrID = request.user.username
-    status = APPROVED 
-    reqQuotaAmount = request.POST.get('quotaAmount') 
+    status = APPROVED
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    record = eval(body['data'])
+    reqQuotaAmount = int(eval(record[3]))
     
     # Get Date, Request Manager ID to update the corresponding entry
-    reqMgrID = request.POST.get('reqMgrID')
-    date = request.POST.get('date')
+    reqMgrID = record[1]
+    date = _get_parsed_date(record[2])
+
     
     # Substract donated quota from the donorMgr quota
     totalQuota = QuotaStore.objects.filter(mgrID=donorMgrID, date=date).values_list(
         "quotaAmount"
     )
-    approvedRequests = Request.objects.filter(mgrID=donorMgrID, date=date).values_list(
-        "Approved"
-    )  
-    newDonarQuota = totalQuota - len(approvedRequests) - reqQuotaAmount
+    approvedRequests = Request.objects.filter(managerID=donorMgrID, date=date, status=APPROVED).values_list(
+        "status"
+    )
+    newDonarQuota = len(totalQuota) - len(approvedRequests) - reqQuotaAmount
     if newDonarQuota >= 0:
-        quotastore = QuotaStore.objects.filter(mgrID=donorMgrID, date=date).\
-            update(quotaAmount=newDonarQuota)
+        # Reduce donor quota
+        QuotaStore.objects.filter(mgrID=donorMgrID, date=date).update(quotaAmount=newDonarQuota)
         
         # Add Quota to reqMgr quota
-        totalQuota = QuotaStore.objects.filter(mgrID=reqMgrID, date=date).values_list(
+        requestorQuota = QuotaStore.objects.filter(mgrID=reqMgrID, date=date).values_list(
             "quotaAmount"
         )  
-        approvedRequests = Request.objects.filter(mgrID=reqMgrID, date=date).values_list(
-            "Approved"
-        ) 
-        newRequestorQuota = availableQuota + reqQuotaAmount - approvedRequests
-        quotastore = QuotaStore.objects.filter(mgrID=reqMgrID, date=date).\
-            update(quotaAmount=newRequestorQuota)
+
+        newRequestorQuota = len(requestorQuota) + reqQuotaAmount
+        QuotaStore.objects.filter(mgrID=reqMgrID, date=date).update(quotaAmount=newRequestorQuota)
             
         QuotaRequest.objects.filter(reqMgrID=reqMgrID, date=date).\
             update(donorMgrID=donorMgrID, status=status)
        
         return render(request, donated_manager_template, 
-                      {'donorMgrID': donorMgrID},
-                      {'reqMgrID': reqMgrID},
-                      {'donatedQuota': reqQuotaAmount},
-                      {'newDonarQuota': newDonarQuota},
-                      {'date': date}
-                    )
+                      {'donorMgrID': donorMgrID,
+                       'reqMgrID': reqMgrID,
+                       'donatedQuota': reqQuotaAmount,
+                       'newDonarQuota': newDonarQuota,
+                       'date': date}
+                      )
     else:
         return HttpResponse({"You donot have enough quota to approve this request"})
     
@@ -316,16 +341,27 @@ def donatequota(request):
 @login_required()
 @csrf_exempt
 def quotastore(request):
-    
     # Fetch quota report of the specific manager
     mgrID = request.user.username
-    dates = datetime.date.today()+timedelta(days=5)
-    quotastore = QuotaStore.objects.filter(mgrID=mgrID, date=dates).values_list(
-        "mgrID",
-        "date",
-        "quotaAmount"
-    )  
-    return render(request, QUOTA_STORE_HTML, {'quotastore': quotastore})
+    date = datetime.date.today()
+    dates = [date]
+    delta = datetime.timedelta(days=1)
+    for i in range(5):
+        # Use update_or_create
+        date += delta
+        dates.append(date)
+
+    quota_list = QuotaStore.objects.filter(mgrID=mgrID, date__in=dates)
+    quota_reqs = QuotaRequest.objects.filter(reqMgrID=mgrID, date__in=dates)
+    others_reqs = QuotaRequest.objects.filter(~Q(reqMgrID=mgrID),
+                                              date__in=dates)
+
+    return render(request, "mgr_quota.html", {'quota_list': quota_list,
+                                              'date_form': DateForm(),
+                                              'quota_reqs': quota_reqs,
+                                              'others_reqs': others_reqs
+                                              })
+
 
 @login_required()
 @csrf_exempt
@@ -334,6 +370,7 @@ def set_limit(request):
     limit = int(request.POST.get('limit'))
     populate_quota_store()
     return redirect("/dashboard")
+
 
 def populate_quota_store():
     allManagers = Employee.objects.filter(role=MGR).values_list('employeeID')
@@ -345,15 +382,15 @@ def populate_quota_store():
         empCount = len(empOfMgr)
         quotaAmount = float(empCount*limit)/100
         # Populate QuotaStore for next 5 days
+        date = datetime.date.today()
         delta = datetime.timedelta(days=1)
         for i in range(5):
             # Use update_or_create
-            quotastore = QuotaStore.objects.update_or_create(mgrID=managerID, 
-                                                             date=date, 
+            QuotaStore.objects.update_or_create(mgrID=managerID, date=date,
                                                              quotaAmount=quotaAmount
                                                             )
-            quotastore.save()
             date += delta
+
 
 class RequestsView(ListView):
     model = Request
@@ -362,6 +399,7 @@ class RequestsView(ListView):
 
     def get_queryset(self):
         return Request.objects.filter(employeeID=self.request.user.username)
+
 
 class RequestView(DetailView):
     model = Request
@@ -372,3 +410,12 @@ class RequestView(DetailView):
         context = {'record': record}
         return render(request, 'requestdetail.html', context)
 
+
+class QuotaRequestView(DetailView):
+    model = QuotaRequest
+    template_name = "quotarequestdetail.html"
+
+    def get(self, request, *args, **kwargs):
+        record = get_object_or_404(QuotaRequest, pk=kwargs['pk'])
+        context = {'record': record}
+        return render(request, 'quotarequestdetail.html', context)

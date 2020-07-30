@@ -7,7 +7,7 @@ class Employee(models.Model):
     employeeName = models.CharField(max_length=50)
     mgrID = models.CharField(max_length=10) # fkey: Employee with role mgr
     mgrName = models.CharField(max_length=50)
-    role = models.CharField(max_length=10)
+    role = models.CharField(max_length=10, default="Engineer")
 
 
 class Request(models.Model):
@@ -25,7 +25,7 @@ class Request(models.Model):
 class QuotaRequest(models.Model):
     id = models.AutoField(primary_key=True)  # pkey
     reqMgrID = models.CharField(max_length=10) # fkey: Employee with role mgr
-    donorMgrID = models.CharField(max_length=10) # fkey: Employee with role mgr
+    donorMgrID = models.CharField(max_length=10, null=True) # fkey: Employee with role mgr
     quotaAmount = models.IntegerField()
     date = models.DateField()
     status = models.CharField(max_length=255)
