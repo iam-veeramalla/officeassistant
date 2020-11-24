@@ -1,4 +1,4 @@
-# F5 Office Management Assistant During Covid19
+# Office Management Assistant During Covid19
 # Reopen Site with Limited Capacity
 
 * This Application helps in reopening the organisations with limited capacity. The Limited Capacity[Percentage of Staff] can be controlled by the admin. The Percentage of staff choosen by admin is called Magic Number.
