@@ -1,88 +1,65 @@
-const express = require('express');
-const app = express();
-const PORT = 3000;
+import { useState } from 'react';
 
-// Middleware to parse form data
-app.use(express.urlencoded({ extended: true }));
+function App() {
+  // State for the list of tasks
+  const [tasks, setTasks] = useState([]);
+  // State for the input box
+  const [input, setInput] = useState('');
 
-// --- In-Memory Database ---
-let tasks = [];
+  // Function to add a task
+  const addTask = (e) => {
+    e.preventDefault(); // Stop page refresh
+    if (!input.trim()) return; // Prevent empty tasks
+    
+    setTasks([...tasks, input]);
+    setInput(''); // Clear input
+  };
 
-// --- Helper: Generate HTML String ---
-// We use a function to return the HTML so it updates dynamically based on the tasks array
-const getHTML = (taskList) => {
-    // Generate list items HTML
-    const listItems = taskList.map((task, index) => `
-        <li>
-            <span>${task}</span>
-            <form action="/delete" method="POST" style="display:inline;">
-                <input type="hidden" name="index" value="${index}">
-                <button type="submit" class="delete-btn">Delete</button>
-            </form>
-        </li>
-    `).join('');
+  // Function to delete a task
+  const deleteTask = (indexToDelete) => {
+    setTasks(tasks.filter((_, index) => index !== indexToDelete));
+  };
 
-    return `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Single File Todo</title>
-        <style>
-            body { font-family: sans-serif; max-width: 400px; margin: 40px auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-            h1 { text-align: center; color: #333; }
-            form.add-form { display: flex; gap: 10px; margin-bottom: 20px; }
-            input[type="text"] { flex-grow: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
-            button { cursor: pointer; padding: 8px 12px; background: #007bff; color: white; border: none; border-radius: 4px; }
-            button:hover { background: #0056b3; }
-            ul { list-style: none; padding: 0; }
-            li { background: #f9f9f9; border-bottom: 1px solid #eee; padding: 10px; display: flex; justify-content: space-between; align-items: center; }
-            li:last-child { border-bottom: none; }
-            button.delete-btn { background: #ff4d4d; font-size: 0.8rem; padding: 5px 10px; }
-            button.delete-btn:hover { background: #cc0000; }
-        </style>
-    </head>
-    <body>
-        <h1>To-Do List</h1>
+  // --- Inline Styles for Simplicity ---
+  const styles = {
+    container: { maxWidth: '400px', margin: '50px auto', fontFamily: 'Arial, sans-serif', textAlign: 'center' },
+    form: { display: 'flex', gap: '10px', marginBottom: '20px' },
+    input: { flexGrow: 1, padding: '10px', fontSize: '16px' },
+    addBtn: { padding: '10px 20px', background: '#007bff', color: '#fff', border: 'none', cursor: 'pointer' },
+    list: { listStyle: 'none', padding: 0, textAlign: 'left' },
+    item: { background: '#f4f4f4', padding: '10px', borderBottom: '1px solid #ddd', display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
+    delBtn: { background: '#ff4d4d', color: '#fff', border: 'none', padding: '5px 10px', cursor: 'pointer', borderRadius: '4px' }
+  };
+
+  return (
+    <div style={styles.container}>
+      <h1>Vite To-Do App</h1>
+
+      <form onSubmit={addTask} style={styles.form}>
+        <input 
+          type="text" 
+          value={input} 
+          onChange={(e) => setInput(e.target.value)} 
+          placeholder="Add a new task..." 
+          style={styles.input}
+        />
+        <button type="submit" style={styles.addBtn}>Add</button>
+      </form>
+
+      <ul style={styles.list}>
+        {tasks.length === 0 ? <p style={{color: '#888'}}>No tasks yet.</p> : null}
         
-        <form class="add-form" action="/add" method="POST">
-            <input type="text" name="task" placeholder="Add a new task..." required autofocus>
-            <button type="submit">Add</button>
-        </form>
+        {tasks.map((task, index) => (
+          <li key={index} style={styles.item}>
+            <span>{task}</span>
+            <button onClick={() => deleteTask(index)} style={styles.delBtn}>
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
-        <ul>
-            ${taskList.length === 0 ? '<p style="text-align:center; color:#888;">No tasks yet.</p>' : listItems}
-        </ul>
-    </body>
-    </html>
-    `;
-};
-
-// --- Routes ---
-
-// 1. Show the page
-app.get('/', (req, res) => {
-    res.send(getHTML(tasks));
-});
-
-// 2. Add a task
-app.post('/add', (req, res) => {
-    const newTask = req.body.task;
-    if (newTask) tasks.push(newTask);
-    res.redirect('/');
-});
-
-// 3. Delete a task
-app.post('/delete', (req, res) => {
-    const index = req.body.index;
-    if (index !== undefined && tasks[index]) {
-        tasks.splice(index, 1);
-    }
-    res.redirect('/');
-});
-
-// --- Start Server ---
-app.listen(PORT, () => {
-    console.log(`App running at http://localhost:${PORT}`);
-});
+export default App;
